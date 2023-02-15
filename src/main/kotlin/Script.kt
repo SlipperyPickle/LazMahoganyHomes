@@ -1,11 +1,9 @@
-import branch.ShouldGetContract
 import homes.Homes
 import leafs.Dummy
-import org.powbot.api.Condition
 import org.powbot.api.event.GameActionEvent
 import org.powbot.api.event.MessageEvent
 import org.powbot.api.event.VarpbitChangedEvent
-import org.powbot.api.rt4.Objects
+import org.powbot.api.rt4.Players
 import org.powbot.api.script.ScriptCategory
 import org.powbot.api.script.ScriptManifest
 import org.powbot.api.script.paint.Paint
@@ -31,7 +29,6 @@ class Script : TreeScript() {
 //    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, SimpleLeaf(this, "") { Condition.sleep(10000)} ) { false }//ShouldGetContract(this)
     val logger: Logger = Logger.getLogger(this.javaClass.simpleName)
     var currentHome: Homes? = null
-    private val varbMap: HashMap<Int, Int> = HashMap()
     var contractTier: Int = 1
     val steelBars = 4
 
@@ -51,17 +48,25 @@ class Script : TreeScript() {
 
     @com.google.common.eventbus.Subscribe
     fun gameAction(gameActionEvent: GameActionEvent) {
-            logger.info("gameAction() Name \t = ${gameActionEvent.name} \t \t ID = ${gameActionEvent.id} \tAction = ${gameActionEvent.interaction}")
+        if (currentHome != null) {
+            logger.info(
+                "gameAction() \n" +
+                        "Home: \t   ${currentHome?.home} \n" +
+                        "ID: \t     ${gameActionEvent.id} \n" +
+                        "Action: \t ${gameActionEvent.name} \n" +
+                        "Tile: \t   ${Players.local().tile()}"
+            )
+        }
     }
 
     @com.google.common.eventbus.Subscribe
     fun messageReceived(msg: MessageEvent) {
         val txt = msg.message.sanitizeMultilineText()
         log.info("\n messageReceived() \n Type: ${msg.type} \n TXT: $txt")
-        val matcher = Constants.CONTRACT_PATTERN.matcher(txt)
-        if (matcher.matches()) {
+        val matcherStart = Constants.CONTRACT_PATTERN.matcher(txt)
+        if (matcherStart.matches()) {
 
-            val location: String = matcher.group(2)
+            val location: String = matcherStart.group(2)
             logger.info("New task = $location")
             try {
                 val home = Homes.get(location)
@@ -72,6 +77,12 @@ class Script : TreeScript() {
             }
         } else {
             logger.info("No matcher found with: $txt")
+        }
+
+        val matcherFinished = Constants.CONTRACT_FINISHED.matcher(txt)
+        if (matcherFinished.matches()) {
+            logger.info("Task finished")
+            currentHome = null
         }
     }
 

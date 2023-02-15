@@ -4,7 +4,7 @@ import org.powbot.api.rt4.Varpbits
 
 enum class Data(
     val varb: Int,
-    val varbbits: IntArray
+    val objectID: IntArray
 ) {
     DATA_1(
         10554,
@@ -47,7 +47,10 @@ enum class Data(
     );
 
     companion object {
-        fun objectsLeft(): Int {
+        /**
+         * Returns the total of objects left to repair
+         */
+        fun count(): Int {
             var count = 0
             for (data in values()) {
                 val i = Varpbits.value(data.varb, false)
@@ -57,5 +60,22 @@ enum class Data(
             }
             return count
         }
+
+//        fun objectsLeft(): MutableList<Int> {
+//            val varps: MutableList<Int>? = null
+//
+//            for (data in values()) {
+//
+//
+////                val list = Li
+//
+//                val i = Varpbits.value(data.varb, false)
+//
+//                if (listOf(1, 3, 4).contains(i)) {
+//                    varps.add(data.varb)
+//                }
+//            }
+//            return varps
+//        }
     }
 }
