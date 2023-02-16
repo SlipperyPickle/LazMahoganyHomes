@@ -300,24 +300,24 @@ enum class Furniture(
 
     TAU_CUPBOARD(
         "Tau",
-        -1,
-        -1,
+        40086,
+        10557,
         arrayOf("Remove", "Build"),
-        Tile(-1,-1,-1)
+        Tile(3045 , 3345, 0)
     ),
 
     TAU_HAT_STAND(
         "Tau",
-        -1,
-        -1,
+        40295,
+        10560,
         arrayOf("Remove", "Build"),
-        Tile(-1,-1,-1)
+        Tile(3046, 3342, 0)
     ),
 
     TAU_SHELVES_1(
         "Tau",
-        -1,
-        -1,
+        40087,
+        10558,
         arrayOf("Remove", "Build"),
         Tile(-1,-1,-1)
     ),
@@ -327,21 +327,21 @@ enum class Furniture(
         -1,
         -1,
         arrayOf("Remove", "Build"),
-        Tile(-1,-1,-1)
+        Tile(3047,3342, 0)
     ),
 
     TAU_SINK(
         "Tau",
-        -1,
-        -1,
-        arrayOf("Remove", "Build"),
+        40083,
+        10554,
+        arrayOf("Repair"),
         Tile(-1,-1,-1)
     ),
 
     TAU_TABLE_1(
         "Tau",
-        -1,
-        -1,
+        40084,
+        10555,
         arrayOf("Remove", "Build"),
         Tile(-1,-1,-1)
     ),
@@ -532,50 +532,50 @@ enum class Furniture(
 
     BOB_LARGE_TABLE(
         "Bob",
-        -1,
-        -1,
+        39981,
+        10554,
         arrayOf("Remove", "Build"),
-        Tile(-1,-1,-1)
+        Tile(3238, 3488, 0)
     ),
 
     BOB_BOOKCASE_1(
         "Bob",
-        -1,
-        -1,
+        39986,
+        10559,
         arrayOf("Remove", "Build"),
-        Tile(-1,-1,-1)
+        Tile(3236, 3489, 0)
     ),
 
     BOB_BOOKCASE_2(
         "Bob",
-        -1,
-        -1,
+        39985,
+        10558,
         arrayOf("Remove", "Build"),
-        Tile(-1,-1,-1)
+        Tile(3236, 3484, 0)
     ),
 
     BOB_CABINET_1(
         "Bob",
         -1,
-        -1,
+        10557,
         arrayOf("Remove", "Build"),
-        Tile(-1,-1,-1)
+        Tile(3236, 3487, 0)
     ),
 
     BOB_CABINET_2(
         "Bob",
         -1,
-        -1,
+        10556,
         arrayOf("Remove", "Build"),
-        Tile(-1,-1,-1)
+        Tile(3236, 3486, 0)
     ),
 
     BOB_GRANDFATHER_CLOCK(
         "Bob",
-        -1,
-        -1,
-        arrayOf("Remove", "Build"),
-        Tile(-1,-1,-1)
+        39982,
+        10555,
+        arrayOf("Repair"),
+        Tile(3236, 3483, 0)
     ),
 
     BOB_WARDROBE(
@@ -593,6 +593,7 @@ enum class Furniture(
         arrayOf("Remove", "Build"),
         Tile(-1,-1,-1)
     ),
+
 
     JEFF_BOOKCASE(
         "Jeff",

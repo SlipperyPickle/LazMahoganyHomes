@@ -8,7 +8,8 @@ import org.powbot.api.script.tree.Leaf
 class Dummy(script: Script) : Leaf<Script>(script, "Banking") {
     override fun execute() {
         script.logger.info("Count = ${Data.count()}")
-        val stair = Objects.stream().id(40067).nearest().first()
+//        if ()
+//        val stair = Objects.stream().action()
 
 //        stair.m
 //        Objects.stream().mi

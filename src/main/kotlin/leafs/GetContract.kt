@@ -25,8 +25,8 @@ class GetContract(script: Script) : Leaf<Script>(script, "GetContract") {
                 }
             } else {
                 script.logger.info("Not chatting")
-                (Npcs.stream().name("Amy").firstOrNull()?.interact("Contract") == true)
-                Condition.wait { widget.visible() || Chat.chatting() }
+                if (Npcs.stream().name("Amy").firstOrNull()?.interact("Contract") == true)
+                    Condition.wait { widget.visible() || Chat.chatting() }
             }
             if (Chat.canContinue()) Chat.completeChat()
         }

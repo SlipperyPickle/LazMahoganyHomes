@@ -86,10 +86,6 @@ class Script : TreeScript() {
         }
     }
 
-    /**
-     * Credits to Krulvis
-     */
-
     companion object {
         private val TAG_REGEXP = Pattern.compile("<[^>]*>")
 

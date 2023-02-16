@@ -41,7 +41,6 @@ class Banking(script: Script) : Leaf<Script>(script, "Banking") {
 
             Bank.close()
         }
-//        } else
     }
 }
 

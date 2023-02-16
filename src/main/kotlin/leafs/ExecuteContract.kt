@@ -10,7 +10,7 @@ import org.powbot.api.script.tree.Leaf
 
 class ExecuteContract(script: Script) : Leaf<Script>(script, "ExecuteContract") {
     override fun execute() {
-        val contractTile = script.currentHome!!.location
+        val contractTile = script.currentHome!!.locations[0]
 
         if (contractTile.distance() > 10 || !contractTile.reachable()) {
             script.logger.info("Walking to ${contractTile.toString()}")

@@ -1,93 +1,104 @@
 package homes
 
 import Constants
-import org.powbot.api.Area
 import org.powbot.api.Tile
 
 
 enum class Homes(
     val home: String,
-    val location: Tile,
-    val requiredItems: RequiredItems
+    val locations: Array<Tile>,
+    val requiredItems: RequiredItems,
+    val stairs: IntArray
 ) {
     JESS(
         "Jess",
-        Tile(2621, 3293, 1),
-        RequiredItems.JESS
+        arrayOf(Tile(2621, 3293, 1), Tile(-1,-1,-1)),
+        RequiredItems.JESS,
+        intArrayOf(-1)
     ),
 
     NOELLA(
         "Noella",
-        Tile(2659, 3321, 0),
-        RequiredItems.NOELLA
+        arrayOf(Tile(2659, 3321, 0), Tile(-1,-1,-1)),
+        RequiredItems.NOELLA,
+        intArrayOf(-1)
     ),
 
     ROSS(
         "Ross",
-        Tile(2614, 3317, 0),
-        RequiredItems.ROSS
+        arrayOf(Tile(2614, 3317, 0), Tile(-1,-1,-1)),
+        RequiredItems.ROSS,
+        intArrayOf(-1)
     ),
 
     LARRY(
         "Larry",
-        Tile(3037, 3363, 0),
-        RequiredItems.LARRY
+        arrayOf(Tile(3037, 3363, 0), Tile(-1,-1,-1)),
+        RequiredItems.LARRY,
+        intArrayOf(-1)
     ),
 
     NORMAN(
         "Norman",
-        Tile(3037, 3345, 1),
-        RequiredItems.NORMAN
+        arrayOf(Tile(3037, 3345, 1), Tile(-1, -1, -1)),
+        RequiredItems.NORMAN,
+        intArrayOf(-1)
     ),
 
     TAU(
         "Tau",
-        Tile(3046, 3346, 0),
-        RequiredItems.TAU
+        arrayOf(Tile(3046, 3346, 0), Tile(-1,-1,-1)),
+        RequiredItems.TAU,
+        intArrayOf(-1)
     ),
 
     BARBARA(
         "Barbara",
-        Tile(1749, 3534, 0),
-        RequiredItems.BARBARA
+        arrayOf(Tile(1749, 3534, 0), Tile(-1,-1,-1)),
+        RequiredItems.BARBARA,
+        intArrayOf(-1)
     ),
 
     LEELA(
         "Leela",
-        Tile(1785, 3593, 0),
-        RequiredItems.LEELA
+        arrayOf(Tile(1785, 3593, 0), Tile(-1,-1,-1)),
+        RequiredItems.LEELA,
+        intArrayOf(-1)
     ),
 
     MARIAH(
         "Mariah",
-        Tile(1765, 3621, 0),
-        RequiredItems.MARIAH
+        arrayOf(Tile(1765, 3621, 0), Tile(-1,-1,-1)),
+        RequiredItems.MARIAH,
+        intArrayOf(-1)
     ),
 
     BOB(
         "Bob",
-        Tile(3239, 3486, 0),
-        RequiredItems.BOB
+        arrayOf(Tile(3239, 3486, 0), Tile(-1,-1,-1)),
+
+        RequiredItems.BOB,
+        intArrayOf(-1)
     ),
 
     JEFF(
         "Jeff",
-        Tile(3240, 3451, 0),
-        RequiredItems.JEFF
+        arrayOf(Tile(3240, 3451, 0), Tile(-1,-1,-1)),
+        RequiredItems.JEFF,
+        intArrayOf(-1)
     ),
 
     SARAH(
         "Sarah",
-        Tile(3234, 3384, 0),
-        RequiredItems.SARAH
+        arrayOf(Tile(3234, 3384, 0), Tile(-1,-1,-1)),
+        RequiredItems.SARAH,
+        intArrayOf(-1)
     );
 
     companion object {
         fun get(name: String): Homes? = Homes.values().firstOrNull { it.name.equals(name, true) }
 
-        fun location(name: String): Tile? = Homes.values().firstOrNull { it.name.equals(name, true) }?.location
-
-
+//        fun location(name: String): Tile? = Homes.values().firstOrNull { it.name.equals(name, true) }?.location
     }
 
 

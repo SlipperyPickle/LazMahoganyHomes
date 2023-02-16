@@ -3,10 +3,9 @@ import java.util.regex.Pattern
 
 
 object Constants {
-    val CONTRACT_PATTERN: Pattern =
-        Pattern.compile("Amy\\|(Please could you g|G)o see (\\w*)[ ,][\\w\\s,-]*[?.] You can get another job once you have furnished \\w* home\\.")
-    val CONTRACT_FINISHED: Pattern =
-        Pattern.compile("You have completed [\\d,]* contracts with a total of [\\d,]* points?\\.")
+    val CONTRACT_PATTERN: Pattern = Pattern.compile("Amy\\|(Please could you g|G)o see (\\w*)[ ,][\\w\\s,-]*[?.] You can get another job once you have furnished \\w* home\\.")
+    val CONTRACT_FINISHED: Pattern = Pattern.compile("You have completed [\\d,]* contracts with a total of [\\d,]* points?\\.")
+
     const val SELECT_CONTRACT_WIDGET = 219
     const val SELECT_CONTRACT_COMPONENT = 1
 
