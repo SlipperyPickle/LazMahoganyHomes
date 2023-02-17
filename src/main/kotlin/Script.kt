@@ -1,9 +1,8 @@
 import homes.Homes
-import leafs.Dummy
+import org.powbot.api.Condition
 import org.powbot.api.event.GameActionEvent
 import org.powbot.api.event.MessageEvent
 import org.powbot.api.event.VarpbitChangedEvent
-import org.powbot.api.rt4.Players
 import org.powbot.api.script.ScriptCategory
 import org.powbot.api.script.ScriptManifest
 import org.powbot.api.script.paint.Paint
@@ -25,12 +24,13 @@ import java.util.regex.Pattern
 )
 
 class Script : TreeScript() {
-    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, Dummy(this) ) { false }//ShouldGetContract(this)
-//    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, SimpleLeaf(this, "") { Condition.sleep(10000)} ) { false }//ShouldGetContract(this)
+//    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, Dummy(this) ) { false }//ShouldGetContract(this)
+    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, SimpleLeaf(this, "") { Condition.sleep(10000)} ) { false }//ShouldGetContract(this)
     val logger: Logger = Logger.getLogger(this.javaClass.simpleName)
     var currentHome: Homes? = null
     var contractTier: Int = 1
     val steelBars = 4
+    var lastStairs = -1
 
     override fun onStart() {
         addPaint()
@@ -42,6 +42,7 @@ class Script : TreeScript() {
 
     @com.google.common.eventbus.Subscribe
     fun varpChanged(varpEvent: VarpbitChangedEvent) {
+
         if (varpEvent.index == 2747)
             logger.info("varpChanged() \t Index = ${varpEvent.index} \t Old = ${varpEvent.previousValue} \t New = ${varpEvent.newValue}")
     }
@@ -52,12 +53,33 @@ class Script : TreeScript() {
             logger.info(
                 "gameAction() \n" +
                         "Home: \t   ${currentHome?.home} \n" +
-                        "ID: \t     ${gameActionEvent.id} \n" +
-                        "Action: \t ${gameActionEvent.name} \n" +
-                        "Tile: \t   ${Players.local().tile()}"
+                        "Name: \t     ${gameActionEvent.name} \n" +
+                        "ID: \t     ${gameActionEvent.id} \n"
             )
         }
     }
+
+//    @com.google.common.eventbus.Subscribe
+//    fun onRender(r: RenderEvent) {
+//
+//        Rendering.setScale(1.0f);
+//        Rendering.setColor(Color.BLACK)
+//        logger.info(objects!!.toList().toString())
+//        if (objects!!.isNotEmpty()) {
+//            objects!!.first().draw()
+//        }
+//    }
+//
+//    override fun poll() {
+//        val actions = arrayOf("Repair", "Remove", "Build")
+//        val objects = Objects.stream().action(*actions).nearest()
+//        for (obj in objects) {
+//            logger.info("name = ${obj.name} \n" +
+//                    "id = ${obj.id()} \n" +
+//                    "mi = ${obj.mainId()}")
+//        }
+//        super.poll()
+//    }
 
     @com.google.common.eventbus.Subscribe
     fun messageReceived(msg: MessageEvent) {
@@ -76,7 +98,7 @@ class Script : TreeScript() {
                 log.info("Can not parse home!")
             }
         } else {
-            logger.info("No matcher found with: $txt")
+            logger.info("No new task found with: $txt")
         }
 
         val matcherFinished = Constants.CONTRACT_FINISHED.matcher(txt)

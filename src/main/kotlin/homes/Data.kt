@@ -1,7 +1,7 @@
 package homes
 
 import org.powbot.api.rt4.Varpbits
-
+@Deprecated("Use Homes.furnitureLeft()")
 enum class Data(
     val varb: Int,
     val objectID: IntArray

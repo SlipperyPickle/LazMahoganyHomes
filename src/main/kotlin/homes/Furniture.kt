@@ -2,7 +2,7 @@ package homes
 
 import org.powbot.api.Tile
 import org.powbot.api.rt4.Varpbits
-
+@Deprecated("Use Homes.objects")
 enum class Furniture(
     val home: String,
     val id: Int,
