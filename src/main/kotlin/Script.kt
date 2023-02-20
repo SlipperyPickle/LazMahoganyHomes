@@ -1,8 +1,6 @@
 import homes.Homes
-import org.powbot.api.Condition
-import org.powbot.api.event.GameActionEvent
+import leafs.Dummy
 import org.powbot.api.event.MessageEvent
-import org.powbot.api.event.VarpbitChangedEvent
 import org.powbot.api.script.ScriptCategory
 import org.powbot.api.script.ScriptManifest
 import org.powbot.api.script.paint.Paint
@@ -24,13 +22,12 @@ import java.util.regex.Pattern
 )
 
 class Script : TreeScript() {
-//    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, Dummy(this) ) { false }//ShouldGetContract(this)
-    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, SimpleLeaf(this, "") { Condition.sleep(10000)} ) { false }//ShouldGetContract(this)
+    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, Dummy(this) ) { false }//ShouldGetContract(this)
+//    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, SimpleLeaf(this, "") { logger.info("In home: ${Homes.inCurrentHome("Mariah")}"); Condition.sleep(10000)} ) { false }//ShouldGetContract(this)
     val logger: Logger = Logger.getLogger(this.javaClass.simpleName)
-    var currentHome: Homes? = null
-    var contractTier: Int = 1
+    var currentHome: Homes? = Homes.get("Mariah")// null
+    var contractTier: Int = 3 //1-4
     val steelBars = 4
-    var lastStairs = -1
 
     override fun onStart() {
         addPaint()
@@ -40,24 +37,24 @@ class Script : TreeScript() {
          */
     }
 
-    @com.google.common.eventbus.Subscribe
-    fun varpChanged(varpEvent: VarpbitChangedEvent) {
-
-        if (varpEvent.index == 2747)
-            logger.info("varpChanged() \t Index = ${varpEvent.index} \t Old = ${varpEvent.previousValue} \t New = ${varpEvent.newValue}")
-    }
-
-    @com.google.common.eventbus.Subscribe
-    fun gameAction(gameActionEvent: GameActionEvent) {
-        if (currentHome != null) {
-            logger.info(
-                "gameAction() \n" +
-                        "Home: \t   ${currentHome?.home} \n" +
-                        "Name: \t     ${gameActionEvent.name} \n" +
-                        "ID: \t     ${gameActionEvent.id} \n"
-            )
-        }
-    }
+//    @com.google.common.eventbus.Subscribe
+//    fun varpChanged(varpEvent: VarpbitChangedEvent) {
+//
+//        if (varpEvent.index == 2747)
+//            logger.info("varpChanged() \t Index = ${varpEvent.index} \t Old = ${varpEvent.previousValue} \t New = ${varpEvent.newValue}")
+//    }
+//
+//    @com.google.common.eventbus.Subscribe
+//    fun gameAction(gameActionEvent: GameActionEvent) {
+//        if (currentHome != null) {
+//            logger.info(
+//                "gameAction() \n" +
+//                        "Home: \t   ${currentHome?.home} \n" +
+//                        "Name: \t     ${gameActionEvent.name} \n" +
+//                        "ID: \t     ${gameActionEvent.id} \n"
+//            )
+//        }
+//    }
 
 //    @com.google.common.eventbus.Subscribe
 //    fun onRender(r: RenderEvent) {

@@ -10,8 +10,8 @@ object Constants {
     const val SELECT_CONTRACT_WIDGET = 219
     const val SELECT_CONTRACT_COMPONENT = 1
 
-    const val BUILD_FURNITURE_WIDGET = -1
-    const val BUILD_FURNITURE_COMPONENT = -1
+    const val BUILD_FURNITURE_WIDGET = 458
+    const val BUILD_FURNITURE_COMPONENT = 3
 
     val NEW_CONTRACT_TILE = Tile(2990, 3365, 0)
 
@@ -45,7 +45,7 @@ object Constants {
     private const val JESS_GRANDFATHER_CLOCK_REPAIR = 40141
     private const val JESS_BROKEN_BATH_REPAIR = 40212
 
-    val JessAllFurniture = intArrayOf(
+    val JessUpstairs = intArrayOf(
         JESS_DRAWERS_REMOVE,
         JESS_DRAWERS_BUILD,
         JESS_CABINET_1_REMOVE,
@@ -81,6 +81,23 @@ object Constants {
 
     private const val NOELLA_GRANDFATHER_CLOCK_REPAIR = 40141
 
+    val NoellaUpstairsRight = intArrayOf(
+        NOELLA_DRESSER_REMOVE,
+        NOELLA_DRESSER_BUILD,
+        NOELLA_CUPBOARD_REMOVE,
+        NOELLA_CUPBOARD_BUILD,
+        NOELLA_HAT_STAND_REPAIR,
+        NOELLA_BROKEN_MIRROR
+    )
+
+    val NoellaUpstairsLeft = intArrayOf(
+        NOELLA_DRAWERS_REMOVE,
+        NOELLA_DRAWERS_BUILD,
+        NOELLA_TABLE_REMOVE,
+        NOELLA_TABLE_BUILD,
+        NOELLA_GRANDFATHER_CLOCK_REPAIR
+    )
+
     val NoellaAllFurniture = intArrayOf(
         NOELLA_DRESSER_REMOVE,
         NOELLA_DRESSER_BUILD,
@@ -114,6 +131,21 @@ object Constants {
 
     private const val ROSS_BROKEN_MIRROR_REPAIR = 40179
 
+    val RossDownstairs = intArrayOf(
+        ROSS_BROKEN_RANGE_REPAIR,
+        ROSS_DRAWERS_REMOVE,
+        ROSS_DRAWERS_BUILD
+    )
+
+    val RossUpstairs = intArrayOf(
+        ROSS_LARGE_BED_REMOVE,
+        ROSS_LARGE_BED_BUILD,
+        ROSS_BED_REMOVE,
+        ROSS_BED_BUILD,
+        ROSS_HAT_STAND_REPAIR,
+        ROSS_BROKEN_MIRROR_REPAIR
+    )
+
     val RossAllFurniture = intArrayOf(
         ROSS_BROKEN_RANGE_REPAIR,
         ROSS_DRAWERS_REMOVE,
@@ -141,6 +173,21 @@ object Constants {
     private const val LARRY_BROKEN_RANGE_REPAIR = 40148
 
     private const val LARRY_HAT_STAND_REPAIR = 40139
+
+    val LarryDownstairs = intArrayOf(
+        LARRY_DRAWERS_REMOVE,
+        LARRY_DRAWERS_BUILD,
+        LARRY_TABLE_REMOVE,
+        LARRY_TABLE_BUILD,
+        LARRY_BROKEN_RANGE_REPAIR,
+        LARRY_HAT_STAND_REPAIR
+    )
+
+    val LarryUpstairs = intArrayOf(
+        LARRY_TABLE_REMOVE,
+        LARRY_TABLE_BUILD,
+        LARRY_GRANDFATHER_CLOCK_REPAIR
+    )
 
     val LarryAllFurniture = intArrayOf(
         LARRY_DRAWERS_REMOVE,
@@ -173,6 +220,24 @@ object Constants {
     private const val NORMAN_DRAWERS_BUILD = 40082
 
     private const val NORMAN_BROKEN_RANGE_REPAIR = 40148
+
+    val NormanDownstairs = intArrayOf(
+        NORMAN_GRANDFATHER_CLOCK_REPAIR,
+        NORMAN_TABLE_REMOVE,
+        NORMAN_TABLE_BUILD
+    )
+
+    val NormanUpstairs = intArrayOf(
+        NORMAN_TABLE_2_REMOVE,
+        NORMAN_TABLE_2_BUILD,
+        NORMAN_BED_REMOVE,
+        NORMAN_BED_BUILD,
+        NORMAN_BOOKSHELF_REMOVE,
+        NORMAN_BOOKSHELF_BUILD,
+        NORMAN_DRAWERS_REMOVE,
+        NORMAN_DRAWERS_BUILD,
+        NORMAN_BROKEN_RANGE_REPAIR
+    )
 
     val NormanAllFurniture = intArrayOf(
         NORMAN_GRANDFATHER_CLOCK_REPAIR,
@@ -207,7 +272,7 @@ object Constants {
 
     private const val TAU_HAT_STAND_REPAIR = 40139
 
-    val TauAllFurniture = intArrayOf(
+    val TauDownstairs = intArrayOf(
         TAU_BROKEN_SINK_REPAIR,
         TAU_TABLE_1_REMOVE,
         TAU_TABLE_2_REMOVE,
@@ -239,7 +304,7 @@ object Constants {
 
     private const val BARBARA_BROKEN_RANGE_REPAIR = 40067
 
-    val BarbaraAllFurniture = intArrayOf(
+    val BarbaraDownstairs = intArrayOf(
         BARBARA_GRANDFATHER_CLOCK_REPAIR,
         BARBARA_TABLE_REMOVE,
         BARBARA_TABLE_BUILD,
@@ -270,6 +335,22 @@ object Constants {
     private const val LEELA_CUPBOARD_REMOVE = 40115
     private const val LEELA_CUPBOARD_BUILD = 40078
 
+    val LeelaDownstairs = intArrayOf(
+        LEELA_TABLE_1_REMOVE,
+        LEELA_TABLE_1_BUILD,
+        LEELA_TABLE_2_REMOVE,
+        LEELA_TABLE_2_BUILD,
+        LEELA_BROKEN_SINK_REPAIR,
+        LEELA_BED_REMOVE,
+        LEELA_BED_BUILD
+    )
+
+    val LeelaUpstairs = intArrayOf(
+        LEELA_BROKEN_MIRROR_REPAIR,
+        LEELA_CUPBOARD_REMOVE,
+        LEELA_CUPBOARD_BUILD
+    )
+
     val LeelaAllFurniture = intArrayOf(
         LEELA_TABLE_1_REMOVE,
         LEELA_TABLE_1_BUILD,
@@ -292,7 +373,7 @@ object Constants {
     private const val MARIAH_TABLE_2_REMOVE = 40031
     private const val MARIAH_TABLE_2_BUILD = 40072
 
-    private const val MARIAH_SHELVES_REMOVE = 40077
+    private const val MARIAH_SHELVES_REMOVE = 40025
     private const val MARIAH_SHELVES_BUILD = 40077
 
     private const val MARIAH_BED_REMOVE = 40043
@@ -304,6 +385,24 @@ object Constants {
     private const val MARIAH_CUPBOARD_BUILD = 40078
 
     private const val MARIAH_HAT_STAND_REPAIR = 40139
+
+    val MariahDownstairs = intArrayOf(
+        MARIAH_TABLE_1_REMOVE,
+        MARIAH_TABLE_1_BUILD,
+        MARIAH_SHELVES_REMOVE,
+        MARIAH_SHELVES_BUILD,
+        MARIAH_BROKEN_SINK_REPAIR,
+        MARIAH_CUPBOARD_REMOVE,
+        MARIAH_CUPBOARD_BUILD,
+        MARIAH_HAT_STAND_REPAIR
+    )
+
+    val MariahUpstairs = intArrayOf(
+        MARIAH_TABLE_2_BUILD,
+        MARIAH_TABLE_2_REMOVE,
+        MARIAH_BED_REMOVE,
+        MARIAH_BED_BUILD
+    )
 
     val MariahAllFurniture = intArrayOf(
         MARIAH_TABLE_1_REMOVE,
@@ -337,10 +436,28 @@ object Constants {
     private const val BOB_BOOKCASE_BUILD = 40074
 
     private const val BOB_WARDROBE_REMOVE = 39917
-    private const val BOB_WARDROPE_BUILD = 40075
+    private const val BOB_WARDROBE_BUILD = 40075
 
     private const val BOB_DRAWERS_REMOVE = 39923
     private const val BOB_DRAWERS_BUILD = 40082
+
+    val BobDownstairs = intArrayOf(
+        BOB_LARGE_TABLE_REMOVE,
+        BOB_LARGE_TABLE_BUILD,
+        BOB_BROKEN_GRANDFATHER_CLOCK_REPAIR,
+        BOB_CABINET_1_REMOVE,
+        BOB_CABINET_2_REMOVE,
+        BOB_CABINET_BUILD,
+        BOB_BOOKCASE_REMOVE,
+        BOB_BOOKCASE_BUILD
+    )
+
+    val BobUpstairs = intArrayOf(
+        BOB_WARDROBE_REMOVE,
+        BOB_WARDROBE_BUILD,
+        BOB_DRAWERS_REMOVE,
+        BOB_DRAWERS_BUILD
+    )
 
     val BobAllFurniture = intArrayOf(
         BOB_LARGE_TABLE_REMOVE,
@@ -352,7 +469,7 @@ object Constants {
         BOB_BOOKCASE_REMOVE,
         BOB_BOOKCASE_BUILD,
         BOB_WARDROBE_REMOVE,
-        BOB_WARDROPE_BUILD,
+        BOB_WARDROBE_BUILD,
         BOB_DRAWERS_REMOVE,
         BOB_DRAWERS_BUILD
     )
@@ -383,6 +500,27 @@ object Constants {
 
     private const val JEFF_CHAIR_REMOVE = 39955
     private const val JEFF_CHAIR_BUILD = 40079
+
+    val JeffDownstairs = intArrayOf(
+        JEFF_TABLE_REMOVE,
+        JEFF_TABLE_BUILD,
+        JEFF_BOOKCASE_REMOVE,
+        JEFF_BOOKCASE_BUILD,
+        JEFF_SHELVES_REMOVE,
+        JEFF_SHELVES_BUILD
+    )
+
+    val JeffUpstairs = intArrayOf(
+        JEFF_BED_REMOVE,
+        JEFF_BED_BUILD,
+        JEFF_DRAWERS_REMOVE,
+        JEFF_DRAWERS_BUILD,
+        JEFF_DRESSERS_REMOVE,
+        JEFF_DRESSER_BUILD,
+        JEFF_BROKEN_MIRROR_REPAIR,
+        JEFF_CHAIR_REMOVE,
+        JEFF_CHAIR_BUILD
+    )
 
     val JeffAllFurniture = intArrayOf(
         JEFF_TABLE_REMOVE,
@@ -423,7 +561,7 @@ object Constants {
 
     private const val SARAH_BROKEN_RANGE_REPAIR = 40148
 
-    val SarahAllFurniture = intArrayOf(
+    val SarahDownstairs = intArrayOf(
         SARAH_TABLE_1_REMOVE,
         SARAH_TABLE_1_BUILD,
         SARAH_TABLE_2_REMOVE,
