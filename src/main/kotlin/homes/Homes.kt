@@ -18,101 +18,106 @@ import Constants.NoellaUpstairsLeft
 import Constants.NoellaUpstairsRight
 import Constants.NormanDownstairs
 import Constants.NormanUpstairs
+import Constants.RossDownstairs
 import Constants.RossUpstairs
 import Constants.SarahDownstairs
 import Constants.TauDownstairs
+import org.powbot.api.Area
 import org.powbot.api.Tile
+import org.powbot.api.rt4.Players
 import org.powbot.api.rt4.Varpbits
 
 
 enum class Homes(
     val home: String,
-    val locations: Array<Tile>,
+    val npcLocation: Tile,
+    val rooms: Array<Rooms>,
+//    val locations: Array<Tile>,
     val requiredItems: RequiredItems,
-    val objects: Array<IntArray>
+//    val objects: Array<IntArray>
 ) {
     JESS(
         "Jess",
-        arrayOf(Tile(2621, 3293, 1), Tile(2622, 3291, 1), Tile(2622, 3294, 1), Tile(2616, 3294, 1)),
-        RequiredItems.JESS,
-        arrayOf(JessUpstairs)
+        Tile(2621, 3293, 1),
+        arrayOf(Rooms.JESS_UPSTAIRS),
+        RequiredItems.JESS
     ),
 
     NOELLA(
         "Noella",
-        arrayOf(Tile(2659, 3321, 0), Tile(2665, 3321, 1), Tile(2655, 3321, 1)),
-        RequiredItems.NOELLA,
-        arrayOf(NoellaUpstairsRight, NoellaUpstairsLeft)
+        Tile(2659, 3321, 0),
+        arrayOf(Rooms.NOELLA_UPSTAIRS_RIGHT, Rooms.NOELLA_UPSTAIRS_LEFT),
+        RequiredItems.NOELLA
     ),
 
     ROSS(
         "Ross",
-        arrayOf(Tile(2614, 3317, 0), Tile(2617, 3316, 1), Tile(2614, 3315, 1), Tile(2616, 3317, 1)),
-        RequiredItems.ROSS,
-        arrayOf(RossUpstairs, RossUpstairs)
+        Tile(2614, 3317, 0),
+        arrayOf(Rooms.ROSS_UPSTAIRS, Rooms.ROSS_DOWNSTAIRS),
+        RequiredItems.ROSS
     ),
 
     LARRY(
         "Larry",
-        arrayOf(Tile(3037, 3363, 0), Tile(3035, 3364, 1)),
-        RequiredItems.LARRY,
-        arrayOf(LarryUpstairs, LarryDownstairs)
+        Tile(3037, 3363, 0),
+        arrayOf(Rooms.LARRY_UPSTAIRS, Rooms.LARRY_DOWNSTAIRS),
+        RequiredItems.LARRY
     ),
 
     NORMAN(
         "Norman",
-        arrayOf(Tile(3037, 3345, 1), Tile(3038, 3344, 1), Tile(3035, 3345, 1)),
-        RequiredItems.NORMAN,
-        arrayOf(NormanDownstairs, NormanUpstairs)
+        Tile(3037, 3345, 1),
+        arrayOf(Rooms.NORMAN_UPSTAIRS, Rooms.NORMAN_DOWNSTAIRS),
+        RequiredItems.NORMAN
     ),
 
     TAU(
         "Tau",
-        arrayOf(Tile(3046, 3346, 0)),
-        RequiredItems.TAU,
-        arrayOf(TauDownstairs)
+        Tile(3046, 3346, 0),
+        arrayOf(Rooms.TAU_DOWNSTAIRS),
+        RequiredItems.TAU
     ),
 
     BARBARA(
         "Barbara",
-        arrayOf(Tile(1749, 3534, 0), Tile(1748, 3537, 1)),
-        RequiredItems.BARBARA,
-        arrayOf(BarbaraDownstairs)
+        Tile(1749, 3534, 0),
+        arrayOf(Rooms.BARBARA_DOWNSTAIRS),
+        RequiredItems.BARBARA
     ),
 
     LEELA(
         "Leela",
-        arrayOf(Tile(1785, 3593, 0), Tile(1787, 3592, 1)),
-        RequiredItems.LEELA,
-        arrayOf(LeelaUpstairs, LeelaDownstairs)
+        Tile(1785, 3593, 0),
+        arrayOf(Rooms.LEELA_UPSTAIRS, Rooms.LEELA_DOWNSTAIRS),
+        RequiredItems.LEELA
     ),
 
     MARIAH(
         "Mariah",
-        arrayOf(Tile(1765, 3621, 0), Tile(1766, 3620, 1)),
-        RequiredItems.MARIAH,
-        arrayOf(MariahUpstairs, MariahDownstairs)
+        Tile(1765, 3621, 0),
+        arrayOf(Rooms.MARIAH_UPSTAIRS, Rooms.MARIAH_DOWNSTAIRS),
+        RequiredItems.MARIAH
     ),
 
     BOB(
         "Bob",
-        arrayOf(Tile(3239, 3486, 0), Tile(3242,3489,1)),
-        RequiredItems.BOB,
-        arrayOf(BobUpstairs, BobDownstairs)
+        Tile(3239, 3486, 0),
+        arrayOf(Rooms.BOB_UPSTAIRS, Rooms.BOB_DOWNSTAIRS),
+        RequiredItems.BOB
     ),
 
     JEFF(
         "Jeff",
-        arrayOf(Tile(3240, 3451, 0), Tile(3238,3449,1), Tile(3239, 3447, 1)),
-        RequiredItems.JEFF,
-        arrayOf(JeffUpstairs, JeffDownstairs)
+        Tile(3240, 3451, 0),
+        arrayOf(Rooms.JEFF_UPSTAIRS, Rooms.JEFF_DOWNSTAIRS),
+        RequiredItems.JEFF
     ),
 
     SARAH(
         "Sarah",
-        arrayOf(Tile(3234, 3384, 0)),
-        RequiredItems.SARAH,
-        arrayOf(SarahDownstairs)
+        Tile(3234, 3384, 0),
+        arrayOf(Rooms.SARAH_DOWNSTAIRS),
+        RequiredItems.SARAH
     );
 
     companion object {
@@ -133,8 +138,8 @@ enum class Homes(
             //TODO
             val home = Homes.values().firstOrNull { it.name.equals(name, true) }
             if (home != null) {
-                for (location in home.locations) {
-                    return location.distance() < 6
+                for (room in home.rooms) {
+                    return room.area.contains(Players.local())
                 }
             }
             return false
@@ -271,4 +276,130 @@ enum class RequiredItems(
             return -1
         }
     }
+}
+
+enum class Rooms (
+    val home: String,
+    val area: Area,
+    val objects: IntArray
+) {
+    JESS_UPSTAIRS(
+        "Jess",
+        Area(Tile(2610, 3297, 1), Tile(2624, 3290, 1)),
+        JessUpstairs
+    ),
+
+    NOELLA_UPSTAIRS_RIGHT(
+        "Noella",
+        Area(Tile(2660, 3324, 1), Tile(2666, 3317, 1)),
+        NoellaUpstairsRight
+    ),
+
+    NOELLA_UPSTAIRS_LEFT(
+        "Noella",
+        Area(Tile(2652, 3323, 1), Tile(2658, 3317, 1)),
+        NoellaUpstairsLeft
+    ),
+
+    ROSS_UPSTAIRS(
+        "Ross",
+        Area(Tile(2609, 3328, 1), Tile(2619, 3321, 1)),
+        RossUpstairs
+    ),
+
+    ROSS_DOWNSTAIRS(
+        "Ross",
+        Area(Tile(2610, 3327, 0), Tile(2618, 3322, 0)),
+        RossDownstairs
+    ),
+
+    LARRY_UPSTAIRS(
+        "Larry",
+        Area(Tile(3033, 3365, 1), Tile(3042, 3360, 1)),
+        LarryUpstairs
+    ),
+
+    LARRY_DOWNSTAIRS(
+        "Larry",
+        Area(Tile(3033, 3368, 0), Tile(3042, 3361, 0)),
+        LarryDownstairs
+    ),
+
+    NORMAN_DOWNSTAIRS(
+        "Norman",
+        Area(Tile(3034, 3347, 0), Tile(3041, 3341, 0)),
+        NormanDownstairs
+    ),
+
+    NORMAN_UPSTAIRS(
+        "Norman",
+        Area(Tile(3034, 3348, 1), Tile(3041, 3343, 1)),
+        NormanUpstairs
+    ),
+
+    TAU_DOWNSTAIRS(
+        "Tau",
+        Area(Tile(3043, 3350, 0), Tile(3052, 3340, 0)),
+        TauDownstairs
+    ),
+
+    BARBARA_DOWNSTAIRS(
+        "Barbara",
+        Area(Tile(1746, 3540, 0), Tile(1755, 3531, 0)),
+        BarbaraDownstairs
+    ),
+
+    LEELA_UPSTAIRS(
+        "Leela",
+        Area(Tile(1781, 3595, 1), Tile(1789, 3589, 1)),
+        LeelaUpstairs
+    ),
+
+    LEELA_DOWNSTAIRS(
+        "Leela",
+        Area(Tile(1781, 3595, 0), Tile(1789, 3589, 0)),
+        LeelaDownstairs
+    ),
+
+    MARIAH_UPSTAIRS(
+        "Mariah",
+        Area(Tile(1762, 3624, 1), Tile(1771, 3618, 1)),
+        MariahUpstairs
+    ),
+
+    MARIAH_DOWNSTAIRS(
+        "Mariah",
+        Area(Tile(1762, 3624, 0), Tile(1771, 3618, 0)),
+        MariahDownstairs
+    ),
+
+    BOB_UPSTAIRS(
+        "Bob",
+        Area(Tile(3234, 3491, 1), Tile(3243, 3482, 1)),
+        BobUpstairs
+    ),
+
+    BOB_DOWNSTAIRS(
+        "Bob",
+        Area(Tile(3234, 3491, 0), Tile(3242, 3482, 0)),
+        BobDownstairs
+    ),
+
+    JEFF_UPSTAIRS(
+        "Jeff",
+        Area(Tile(3235, 3455, 1), Tile(3244, 3445, 1)),
+        JeffUpstairs
+    ),
+
+    JEFF_DOWNSTAIRS(
+        "Jeff",
+        Area(Tile(3235, 3455, 0), Tile(3244, 3445, 0)),
+        JeffDownstairs
+    ),
+
+    SARAH_DOWNSTAIRS(
+        "Sarah",
+        Area(Tile(3233, 3386, 0), Tile(3238, 3382, 0)),
+        SarahDownstairs
+    )
 }
