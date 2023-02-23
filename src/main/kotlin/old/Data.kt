@@ -1,4 +1,4 @@
-package homes
+package old
 
 import org.powbot.api.rt4.Varpbits
 @Deprecated("Use Homes.furnitureLeft()")

@@ -6,12 +6,13 @@ object Constants {
     val CONTRACT_PATTERN: Pattern = Pattern.compile("Amy\\|(Please could you g|G)o see (\\w*)[ ,][\\w\\s,-]*[?.] You can get another job once you have furnished \\w* home\\.")
 //    val CONTRACT_FINISHED: Pattern = Pattern.compile("You have completed [\\d,]* contracts with a total of [\\d,]* points?\\.")
     val CONTRACT_FINISHED: Pattern = Pattern.compile("Aaah, nothing like a nice cuppa tea!")
+    const val CONTRACT_FINISH = "Yes, I'd love a cuppa."
 
     const val SELECT_CONTRACT_WIDGET = 219
     const val SELECT_CONTRACT_COMPONENT = 1
 
     const val BUILD_FURNITURE_WIDGET = 458
-    const val BUILD_FURNITURE_COMPONENT = 3
+    const val BUILD_FURNITURE_COMPONENT = 4
 
     val NEW_CONTRACT_TILE = Tile(2990, 3365, 0)
 
@@ -21,7 +22,7 @@ object Constants {
     const val TEAK_PLANK = 8780
     const val MAHOGANY_PLANK = 8782
 
-    const val PORTAL = 28822
+//    const val PORTAL = 28822
 
     val FURNITURE_VARPS = intArrayOf(10554, 10555, 10556, 10557, 10558, 10559, 10560, 10561)
 
@@ -98,19 +99,19 @@ object Constants {
         NOELLA_GRANDFATHER_CLOCK_REPAIR
     )
 
-    val NoellaAllFurniture = intArrayOf(
-        NOELLA_DRESSER_REMOVE,
-        NOELLA_DRESSER_BUILD,
-        NOELLA_CUPBOARD_REMOVE,
-        NOELLA_CUPBOARD_BUILD,
-        NOELLA_HAT_STAND_REPAIR,
-        NOELLA_BROKEN_MIRROR,
-        NOELLA_DRAWERS_REMOVE,
-        NOELLA_DRAWERS_BUILD,
-        NOELLA_TABLE_REMOVE,
-        NOELLA_TABLE_BUILD,
-        NOELLA_GRANDFATHER_CLOCK_REPAIR
-    )
+//    val NoellaAllFurniture = intArrayOf(
+//        NOELLA_DRESSER_REMOVE,
+//        NOELLA_DRESSER_BUILD,
+//        NOELLA_CUPBOARD_REMOVE,
+//        NOELLA_CUPBOARD_BUILD,
+//        NOELLA_HAT_STAND_REPAIR,
+//        NOELLA_BROKEN_MIRROR,
+//        NOELLA_DRAWERS_REMOVE,
+//        NOELLA_DRAWERS_BUILD,
+//        NOELLA_TABLE_REMOVE,
+//        NOELLA_TABLE_BUILD,
+//        NOELLA_GRANDFATHER_CLOCK_REPAIR
+//    )
 
     /*
     ROSS
@@ -146,17 +147,17 @@ object Constants {
         ROSS_BROKEN_MIRROR_REPAIR
     )
 
-    val RossAllFurniture = intArrayOf(
-        ROSS_BROKEN_RANGE_REPAIR,
-        ROSS_DRAWERS_REMOVE,
-        ROSS_DRAWERS_BUILD,
-        ROSS_LARGE_BED_REMOVE,
-        ROSS_LARGE_BED_BUILD,
-        ROSS_BED_REMOVE,
-        ROSS_BED_BUILD,
-        ROSS_HAT_STAND_REPAIR,
-        ROSS_BROKEN_MIRROR_REPAIR
-    )
+//    val RossAllFurniture = intArrayOf(
+//        ROSS_BROKEN_RANGE_REPAIR,
+//        ROSS_DRAWERS_REMOVE,
+//        ROSS_DRAWERS_BUILD,
+//        ROSS_LARGE_BED_REMOVE,
+//        ROSS_LARGE_BED_BUILD,
+//        ROSS_BED_REMOVE,
+//        ROSS_BED_BUILD,
+//        ROSS_HAT_STAND_REPAIR,
+//        ROSS_BROKEN_MIRROR_REPAIR
+//    )
 
     /*
     LARRY
@@ -189,15 +190,15 @@ object Constants {
         LARRY_GRANDFATHER_CLOCK_REPAIR
     )
 
-    val LarryAllFurniture = intArrayOf(
-        LARRY_DRAWERS_REMOVE,
-        LARRY_DRAWERS_BUILD,
-        LARRY_TABLE_REMOVE,
-        LARRY_TABLE_BUILD,
-        LARRY_GRANDFATHER_CLOCK_REPAIR,
-        LARRY_BROKEN_RANGE_REPAIR,
-        LARRY_HAT_STAND_REPAIR
-    )
+//    val LarryAllFurniture = intArrayOf(
+//        LARRY_DRAWERS_REMOVE,
+//        LARRY_DRAWERS_BUILD,
+//        LARRY_TABLE_REMOVE,
+//        LARRY_TABLE_BUILD,
+//        LARRY_GRANDFATHER_CLOCK_REPAIR,
+//        LARRY_BROKEN_RANGE_REPAIR,
+//        LARRY_HAT_STAND_REPAIR
+//    )
 
     /*
     NORMAN
@@ -239,20 +240,20 @@ object Constants {
         NORMAN_BROKEN_RANGE_REPAIR
     )
 
-    val NormanAllFurniture = intArrayOf(
-        NORMAN_GRANDFATHER_CLOCK_REPAIR,
-        NORMAN_TABLE_REMOVE,
-        NORMAN_TABLE_BUILD,
-        NORMAN_TABLE_2_REMOVE,
-        NORMAN_TABLE_2_BUILD,
-        NORMAN_BED_REMOVE,
-        NORMAN_BED_BUILD,
-        NORMAN_BOOKSHELF_REMOVE,
-        NORMAN_BOOKSHELF_BUILD,
-        NORMAN_DRAWERS_REMOVE,
-        NORMAN_DRAWERS_BUILD,
-        NORMAN_BROKEN_RANGE_REPAIR
-    )
+//    val NormanAllFurniture = intArrayOf(
+//        NORMAN_GRANDFATHER_CLOCK_REPAIR,
+//        NORMAN_TABLE_REMOVE,
+//        NORMAN_TABLE_BUILD,
+//        NORMAN_TABLE_2_REMOVE,
+//        NORMAN_TABLE_2_BUILD,
+//        NORMAN_BED_REMOVE,
+//        NORMAN_BED_BUILD,
+//        NORMAN_BOOKSHELF_REMOVE,
+//        NORMAN_BOOKSHELF_BUILD,
+//        NORMAN_DRAWERS_REMOVE,
+//        NORMAN_DRAWERS_BUILD,
+//        NORMAN_BROKEN_RANGE_REPAIR
+//    )
 
     /*
     TAU
@@ -351,18 +352,18 @@ object Constants {
         LEELA_CUPBOARD_BUILD
     )
 
-    val LeelaAllFurniture = intArrayOf(
-        LEELA_TABLE_1_REMOVE,
-        LEELA_TABLE_1_BUILD,
-        LEELA_TABLE_2_REMOVE,
-        LEELA_TABLE_2_BUILD,
-        LEELA_BROKEN_MIRROR_REPAIR,
-        LEELA_BROKEN_SINK_REPAIR,
-        LEELA_BED_REMOVE,
-        LEELA_BED_BUILD,
-        LEELA_CUPBOARD_REMOVE,
-        LEELA_CUPBOARD_BUILD
-    )
+//    val LeelaAllFurniture = intArrayOf(
+//        LEELA_TABLE_1_REMOVE,
+//        LEELA_TABLE_1_BUILD,
+//        LEELA_TABLE_2_REMOVE,
+//        LEELA_TABLE_2_BUILD,
+//        LEELA_BROKEN_MIRROR_REPAIR,
+//        LEELA_BROKEN_SINK_REPAIR,
+//        LEELA_BED_REMOVE,
+//        LEELA_BED_BUILD,
+//        LEELA_CUPBOARD_REMOVE,
+//        LEELA_CUPBOARD_BUILD
+//    )
 
     /*
     MARIAH
@@ -404,20 +405,20 @@ object Constants {
         MARIAH_BED_BUILD
     )
 
-    val MariahAllFurniture = intArrayOf(
-        MARIAH_TABLE_1_REMOVE,
-        MARIAH_TABLE_1_BUILD,
-        MARIAH_TABLE_2_REMOVE,
-        MARIAH_TABLE_2_BUILD,
-        MARIAH_SHELVES_REMOVE,
-        MARIAH_SHELVES_BUILD,
-        MARIAH_BED_REMOVE,
-        MARIAH_BED_BUILD,
-        MARIAH_BROKEN_SINK_REPAIR,
-        MARIAH_CUPBOARD_REMOVE,
-        MARIAH_CUPBOARD_BUILD,
-        MARIAH_HAT_STAND_REPAIR
-    )
+//    val MariahAllFurniture = intArrayOf(
+//        MARIAH_TABLE_1_REMOVE,
+//        MARIAH_TABLE_1_BUILD,
+//        MARIAH_TABLE_2_REMOVE,
+//        MARIAH_TABLE_2_BUILD,
+//        MARIAH_SHELVES_REMOVE,
+//        MARIAH_SHELVES_BUILD,
+//        MARIAH_BED_REMOVE,
+//        MARIAH_BED_BUILD,
+//        MARIAH_BROKEN_SINK_REPAIR,
+//        MARIAH_CUPBOARD_REMOVE,
+//        MARIAH_CUPBOARD_BUILD,
+//        MARIAH_HAT_STAND_REPAIR
+//    )
 
     /*
     BOB
@@ -459,20 +460,20 @@ object Constants {
         BOB_DRAWERS_BUILD
     )
 
-    val BobAllFurniture = intArrayOf(
-        BOB_LARGE_TABLE_REMOVE,
-        BOB_LARGE_TABLE_BUILD,
-        BOB_BROKEN_GRANDFATHER_CLOCK_REPAIR,
-        BOB_CABINET_1_REMOVE,
-        BOB_CABINET_2_REMOVE,
-        BOB_CABINET_BUILD,
-        BOB_BOOKCASE_REMOVE,
-        BOB_BOOKCASE_BUILD,
-        BOB_WARDROBE_REMOVE,
-        BOB_WARDROBE_BUILD,
-        BOB_DRAWERS_REMOVE,
-        BOB_DRAWERS_BUILD
-    )
+//    val BobAllFurniture = intArrayOf(
+//        BOB_LARGE_TABLE_REMOVE,
+//        BOB_LARGE_TABLE_BUILD,
+//        BOB_BROKEN_GRANDFATHER_CLOCK_REPAIR,
+//        BOB_CABINET_1_REMOVE,
+//        BOB_CABINET_2_REMOVE,
+//        BOB_CABINET_BUILD,
+//        BOB_BOOKCASE_REMOVE,
+//        BOB_BOOKCASE_BUILD,
+//        BOB_WARDROBE_REMOVE,
+//        BOB_WARDROBE_BUILD,
+//        BOB_DRAWERS_REMOVE,
+//        BOB_DRAWERS_BUILD
+//    )
 
     /*
     JEFF
@@ -522,23 +523,23 @@ object Constants {
         JEFF_CHAIR_BUILD
     )
 
-    val JeffAllFurniture = intArrayOf(
-        JEFF_TABLE_REMOVE,
-        JEFF_TABLE_BUILD,
-        JEFF_BOOKCASE_REMOVE,
-        JEFF_BOOKCASE_BUILD,
-        JEFF_SHELVES_REMOVE,
-        JEFF_SHELVES_BUILD,
-        JEFF_BED_REMOVE,
-        JEFF_BED_BUILD,
-        JEFF_DRAWERS_REMOVE,
-        JEFF_DRAWERS_BUILD,
-        JEFF_DRESSERS_REMOVE,
-        JEFF_DRESSER_BUILD,
-        JEFF_BROKEN_MIRROR_REPAIR,
-        JEFF_CHAIR_REMOVE,
-        JEFF_CHAIR_BUILD
-    )
+//    val JeffAllFurniture = intArrayOf(
+//        JEFF_TABLE_REMOVE,
+//        JEFF_TABLE_BUILD,
+//        JEFF_BOOKCASE_REMOVE,
+//        JEFF_BOOKCASE_BUILD,
+//        JEFF_SHELVES_REMOVE,
+//        JEFF_SHELVES_BUILD,
+//        JEFF_BED_REMOVE,
+//        JEFF_BED_BUILD,
+//        JEFF_DRAWERS_REMOVE,
+//        JEFF_DRAWERS_BUILD,
+//        JEFF_DRESSERS_REMOVE,
+//        JEFF_DRESSER_BUILD,
+//        JEFF_BROKEN_MIRROR_REPAIR,
+//        JEFF_CHAIR_REMOVE,
+//        JEFF_CHAIR_BUILD
+//    )
 
     /*
     SARAH

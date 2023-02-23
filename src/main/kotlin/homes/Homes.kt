@@ -32,9 +32,7 @@ enum class Homes(
     val home: String,
     val npcLocation: Tile,
     val rooms: Array<Rooms>,
-//    val locations: Array<Tile>,
-    val requiredItems: RequiredItems,
-//    val objects: Array<IntArray>
+    val requiredItems: RequiredItems
 ) {
     JESS(
         "Jess",
