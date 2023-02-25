@@ -1,6 +1,5 @@
 package homes
 
-import Constants
 import Constants.BarbaraDownstairs
 import Constants.BobDownstairs
 import Constants.BobUpstairs
@@ -12,15 +11,19 @@ import Constants.LarryDownstairs
 import Constants.LarryUpstairs
 import Constants.LeelaDownstairs
 import Constants.LeelaUpstairs
+import Constants.MAHOGANY_PLANK
 import Constants.MariahDownstairs
 import Constants.MariahUpstairs
 import Constants.NoellaUpstairsLeft
 import Constants.NoellaUpstairsRight
 import Constants.NormanDownstairs
 import Constants.NormanUpstairs
+import Constants.OAK_PLANK
+import Constants.PLANK
 import Constants.RossDownstairs
 import Constants.RossUpstairs
 import Constants.SarahDownstairs
+import Constants.TEAK_PLANK
 import Constants.TauDownstairs
 import org.powbot.api.Area
 import org.powbot.api.Tile
@@ -43,8 +46,8 @@ enum class Homes(
 
     NOELLA(
         "Noella",
-        Tile(2659, 3321, 0),
-        arrayOf(Rooms.NOELLA_UPSTAIRS_RIGHT, Rooms.NOELLA_UPSTAIRS_LEFT),
+        Tile(2655, 3321, 0),
+        arrayOf(Rooms.NOELLA_UPSTAIRS_RIGHT, Rooms.NOELLA_UPSTAIRS_LEFT, Rooms.NOELLA_DOWNSTAIRS),
         RequiredItems.NOELLA
     ),
 
@@ -65,7 +68,7 @@ enum class Homes(
     NORMAN(
         "Norman",
         Tile(3037, 3345, 1),
-        arrayOf(Rooms.NORMAN_UPSTAIRS, Rooms.NORMAN_DOWNSTAIRS),
+        arrayOf(Rooms.NORMAN_DOWNSTAIRS, Rooms.NORMAN_UPSTAIRS),
         RequiredItems.NORMAN
     ),
 
@@ -132,16 +135,41 @@ enum class Homes(
             return count
         }
 
-        fun inCurrentHome(name: String): Boolean {
-            //TODO
+        fun inCurrentHome(name: String?): Boolean {
             val home = Homes.values().firstOrNull { it.name.equals(name, true) }
             if (home != null) {
                 for (room in home.rooms) {
-                    return room.area.contains(Players.local())
+                    if (room.area.contains(Players.local())) {
+                        return true
+                    }
                 }
             }
             return false
         }
+
+        fun requiredItems(name: String?, tier: Int): Array<Int>? {
+            val home = Homes.values().firstOrNull { it.name.equals(name, true) }
+            val result = when (tier) {
+                0 -> home!!.requiredItems.beginner
+                1 -> home!!.requiredItems.novice
+                2 -> home!!.requiredItems.adept
+                3 -> home!!.requiredItems.expert
+                else -> null
+            }
+            return result
+        }
+
+        fun currentPlank(tier: Int): Int {
+            return when (tier) {
+                0 -> PLANK
+                1 -> OAK_PLANK
+                2 -> TEAK_PLANK
+                3 -> MAHOGANY_PLANK
+                else -> -1
+            }
+        }
+
+
     }
 }
 
@@ -253,26 +281,26 @@ enum class RequiredItems(
     );
 
     companion object {
-        fun get(name: String, tier: Int): Array<Int>? {
-            val tiers = values().firstOrNull { it.name.equals(name, true) }
-            when (tier) {
-                0 -> return tiers?.beginner
-                1 -> return tiers?.novice
-                2 -> return tiers?.adept
-                3 -> return tiers?.expert
-            }
-            return null
-        }
+//        fun get(name: String, tier: Int): Array<Int>? {
+//            val tiers = values().firstOrNull { it.name.equals(name, true) }
+//            when (tier) {
+//                0 -> return tiers?.beginner
+//                1 -> return tiers?.novice
+//                2 -> return tiers?.adept
+//                3 -> return tiers?.expert
+//            }
+//            return null
+//        }
 
-        fun getPlank(tier: Int): Int {
-            when (tier) {
-                0 -> return Constants.PLANK
-                1 -> return Constants.OAK_PLANK
-                2 -> return Constants.TEAK_PLANK
-                3 -> return Constants.MAHOGANY_PLANK
-            }
-            return -1
-        }
+//        fun getPlank(tier: Int): Int {
+//            when (tier) {
+//                0 -> return Constants.PLANK
+//                1 -> return Constants.OAK_PLANK
+//                2 -> return Constants.TEAK_PLANK
+//                3 -> return Constants.MAHOGANY_PLANK
+//            }
+//            return -1
+//        }
     }
 }
 
@@ -281,9 +309,10 @@ enum class Rooms (
     val area: Area,
     val objects: IntArray
 ) {
+
     JESS_UPSTAIRS(
         "Jess",
-        Area(Tile(2610, 3297, 1), Tile(2624, 3290, 1)),
+        Area(Tile(2611, 3296, 1), Tile(2623, 3291, 1)),
         JessUpstairs
     ),
 
@@ -299,15 +328,21 @@ enum class Rooms (
         NoellaUpstairsLeft
     ),
 
+    NOELLA_DOWNSTAIRS(
+        "Noella",
+        Area(Tile(2653, 3322, 0), Tile(2664, 3319, 0)),
+        intArrayOf(-1)
+    ),
+
     ROSS_UPSTAIRS(
         "Ross",
-        Area(Tile(2609, 3328, 1), Tile(2619, 3321, 1)),
+        Area(Tile(2610, 3319, 1), Tile(2618, 3314, 1)),
         RossUpstairs
     ),
 
     ROSS_DOWNSTAIRS(
         "Ross",
-        Area(Tile(2610, 3327, 0), Tile(2618, 3322, 0)),
+        Area(Tile(2611, 3318, 0), Tile(2617, 3315, 0)),
         RossDownstairs
     ),
 
@@ -325,13 +360,13 @@ enum class Rooms (
 
     NORMAN_DOWNSTAIRS(
         "Norman",
-        Area(Tile(3034, 3347, 0), Tile(3041, 3341, 0)),
+        Area(Tile(3035, 3347, 0), Tile(3040, 3342, 0)),
         NormanDownstairs
     ),
 
     NORMAN_UPSTAIRS(
         "Norman",
-        Area(Tile(3034, 3348, 1), Tile(3041, 3343, 1)),
+        Area(Tile(3035, 3347, 1), Tile(3040, 3344, 1)),
         NormanUpstairs
     ),
 
@@ -373,13 +408,13 @@ enum class Rooms (
 
     BOB_UPSTAIRS(
         "Bob",
-        Area(Tile(3234, 3491, 1), Tile(3243, 3482, 1)),
+        Area(Tile(3235, 3490, 1), Tile(3242, 3483, 1)),
         BobUpstairs
     ),
 
     BOB_DOWNSTAIRS(
         "Bob",
-        Area(Tile(3234, 3491, 0), Tile(3242, 3482, 0)),
+        Area(Tile(3235, 3490, 0), Tile(3241, 3483, 0)),
         BobDownstairs
     ),
 

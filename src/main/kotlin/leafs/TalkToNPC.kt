@@ -11,8 +11,8 @@ class TalkToNPC(script: Script) : Leaf<Script>(script, "TalkTo") { //${script.cu
 
     override fun execute() {
         val homeOwner = Npcs.stream().name(script.currentHome!!.home).first()
-        if (Chat.completeChat(CONTRACT_FINISH)) {
-            Condition.wait { !Chat.chatting() }
+        if (Chat.chatting()) {
+            Chat.completeChat(CONTRACT_FINISH)
         } else if (homeOwner.valid() && homeOwner.inViewport() && homeOwner.interact("Talk-to")) {
             Condition.wait({ Chat.chatting() }, 450, 10)
         }

@@ -6,27 +6,36 @@ import Constants.PLANK
 import Constants.STEEL_BAR
 import Constants.TEAK_PLANK
 import Script
-import homes.RequiredItems
+import homes.Homes
 import leafs.*
 import org.powbot.api.rt4.Bank
 import org.powbot.api.rt4.Inventory
 import org.powbot.api.script.tree.Branch
 import org.powbot.api.script.tree.TreeComponent
 
-class HasItems(script: Script) : Branch<Script>(script, "HasItems?") {
+class InCurrentHome(script: Script): Branch<Script>(script, "InCurrentHome?") {
     override val successComponent: TreeComponent<Script> = IsFirstFloorDone(script)
+    override val failedComponent: TreeComponent<Script> = HasItems(script)
+
+    override fun validate(): Boolean {
+        return (script.currentHome != null && Homes.inCurrentHome(script.currentHome!!.name))
+    }
+}
+
+class HasItems(script: Script) : Branch<Script>(script, "HasItems?") {
+    override val successComponent: TreeComponent<Script> = IsAtFirstFloor(script)
     override val failedComponent: TreeComponent<Script> = BankOpened(script)
 
     private fun hasRequiredItems(): Boolean {
         val currentTier = script.contractTier
         val home = script.currentHome?.name
         if (!home.isNullOrEmpty()) {
-            val itemsNeeded = RequiredItems.get(home, currentTier)
+            val itemsNeeded = Homes.requiredItems(home, currentTier)
 
             val numberSteelBars = Inventory.stream().id(STEEL_BAR).toList().size
             script.logger.info(
                 "Current steel bars: $numberSteelBars number of planks: ${
-                    Inventory.stream().id(OAK_PLANK).toList().size
+                    Inventory.stream().id(Inventory.stream().id(TEAK_PLANK).toList().size)
                 }"
             )
 
@@ -75,7 +84,7 @@ class ShouldWithdrawBars(script: Script) : Branch<Script>(script, "ShouldWithdra
     override val failedComponent: TreeComponent<Script> = ShouldWithdrawPlanks(script)
 
     override fun validate(): Boolean {
-        return Bank.opened()
+        return (2 - Inventory.stream().id(STEEL_BAR).count()) > 0
     }
 }
 

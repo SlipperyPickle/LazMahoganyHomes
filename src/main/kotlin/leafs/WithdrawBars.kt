@@ -19,7 +19,7 @@ class WithdrawBars(script: Script) : Leaf<Script>(script, "WithdrawBars") {
             ScriptManager.stop()
             return
         }
-        if (Bank.withdraw(bars, script.steelBars)) {
+        if (Bank.withdraw(STEEL_BAR, script.steelBars - Inventory.stream().id(STEEL_BAR).count().toInt() )) {
             Condition.wait { Inventory.stream().id(STEEL_BAR).count() > 0 }
         }
 

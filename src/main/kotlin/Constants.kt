@@ -15,6 +15,7 @@ object Constants {
     const val BUILD_FURNITURE_COMPONENT = 4
 
     val NEW_CONTRACT_TILE = Tile(2990, 3365, 0)
+    val BANK_TILE = Tile(3012, 3355, 0)
 
     const val STEEL_BAR = 2353
     const val PLANK = 960
@@ -40,7 +41,7 @@ object Constants {
     private const val JESS_BED_REMOVE = 40193
     private const val JESS_BED_BUILD = 40080
 
-    private const val JESS_TABLE_REMOVE = 400108
+    private const val JESS_TABLE_REMOVE = 40108
     private const val JESS_TABLE_BUILD = 40070
 
     private const val JESS_GRANDFATHER_CLOCK_REPAIR = 40141
@@ -370,9 +371,9 @@ object Constants {
      */
 
     private const val MARIAH_TABLE_1_REMOVE = 40017
-    private const val MARIAH_TABLE_1_BUILD = 40069
+    private const val MARIAH_TABLE_1_BUILD = 40072
     private const val MARIAH_TABLE_2_REMOVE = 40031
-    private const val MARIAH_TABLE_2_BUILD = 40072
+    private const val MARIAH_TABLE_2_BUILD = 40069
 
     private const val MARIAH_SHELVES_REMOVE = 40025
     private const val MARIAH_SHELVES_BUILD = 40077
@@ -479,7 +480,7 @@ object Constants {
     JEFF
      */
 
-    private const val JEFF_TABLE_REMOVE = 39989
+    private const val JEFF_TABLE_REMOVE = 39929
     private const val JEFF_TABLE_BUILD = 40070
 
     private const val JEFF_BOOKCASE_REMOVE = 39911

@@ -1,16 +1,18 @@
 import branch.HasContract
 import homes.Homes
 import org.powbot.api.event.MessageEvent
+import org.powbot.api.rt4.walking.model.Skill
+import org.powbot.api.script.OptionType
 import org.powbot.api.script.ScriptCategory
+import org.powbot.api.script.ScriptConfiguration
 import org.powbot.api.script.ScriptManifest
 import org.powbot.api.script.paint.Paint
 import org.powbot.api.script.paint.PaintBuilder
 import org.powbot.api.script.tree.TreeComponent
 import org.powbot.api.script.tree.TreeScript
-import org.powbot.dax.api.DaxWalker
-import org.powbot.dax.teleports.Teleport
 import java.util.logging.Logger
 import java.util.regex.Pattern
+import kotlin.properties.Delegates
 
 @ScriptManifest(
     name = "LazMahoganyHomes",
@@ -21,24 +23,39 @@ import java.util.regex.Pattern
     markdownFileName = "MahoganyHomes.md"
 )
 
+
+@ScriptConfiguration.List(
+    [
+        ScriptConfiguration(
+            name = "TierSelection",
+            description = "Select the tier you would like to use.",
+            optionType = OptionType.STRING,
+            allowedValues = arrayOf("Beginner", "Novice", "Adept", "Expert")
+        ),
+            ]
+)
+
 class Script : TreeScript() {
 //    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, Dummy(this) ) { false }//ShouldGetContract(this)
 //    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, SimpleLeaf(this, "") { logger.info("In home: ${Homes.inCurrentHome("Mariah")}"); Condition.sleep(10000)} ) { false }//ShouldGetContract(this)
 
     override val rootComponent: TreeComponent<*> = HasContract(this)
     val logger: Logger = Logger.getLogger(this.javaClass.simpleName)
-    var currentHome: Homes? = null
+    var currentHome: Homes? = Homes.get("Noella")// null
     var firstFloorDone: Boolean = false
-    var contractTier: Int = 2 //0-4?
+    var contractTier by Delegates.notNull<Int>()
     val steelBars = 2
 
     override fun onStart() {
         addPaint()
-        DaxWalker.removeBlacklistTeleports(Teleport.POH_OUTSIDE_HOSIDIUS, Teleport.POH_OUTSIDE_HOSIDIUS_TAB)
-        /**
-         * TODO
-         * ADD CONTRACT TIER SELECTION
-         */
+        contractTier = when (getOption<String>("TierSelection")) {
+            "Beginner" -> 0
+            "Novice" -> 1
+            "Adept" -> 2
+            "Expert" -> 3
+            else -> -1
+        }
+
     }
 
     @com.google.common.eventbus.Subscribe
@@ -87,8 +104,10 @@ class Script : TreeScript() {
 
     private fun addPaint() {
         val p: Paint = PaintBuilder.newBuilder()
+            .trackSkill(Skill.Construction)
             .addString("Last leaf:") { lastLeaf.name }
             .addString("Current Home:") { currentHome?.home ?: "Null" }
+            .addString("Furniture left:") { Homes.furnitureLeft().toString()}
             .addString("Current Tier:") { contractTier.toString() }
             .y(45)
             .x(40)
