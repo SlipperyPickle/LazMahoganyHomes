@@ -1,6 +1,13 @@
+import Constants.MAHOGANY_PLANK
+import Constants.OAK_PLANK
+import Constants.PLANK
+import Constants.TEAK_PLANK
 import branch.HasContract
 import homes.Homes
+import leafs.Dummy
+import org.powbot.api.event.InventoryChangeEvent
 import org.powbot.api.event.MessageEvent
+import org.powbot.api.rt4.Bank
 import org.powbot.api.rt4.walking.model.Skill
 import org.powbot.api.script.OptionType
 import org.powbot.api.script.ScriptCategory
@@ -8,6 +15,8 @@ import org.powbot.api.script.ScriptConfiguration
 import org.powbot.api.script.ScriptManifest
 import org.powbot.api.script.paint.Paint
 import org.powbot.api.script.paint.PaintBuilder
+import org.powbot.api.script.tree.SimpleBranch
+import org.powbot.api.script.tree.SimpleLeaf
 import org.powbot.api.script.tree.TreeComponent
 import org.powbot.api.script.tree.TreeScript
 import java.util.logging.Logger
@@ -23,7 +32,6 @@ import kotlin.properties.Delegates
     markdownFileName = "MahoganyHomes.md"
 )
 
-
 @ScriptConfiguration.List(
     [
         ScriptConfiguration(
@@ -32,7 +40,12 @@ import kotlin.properties.Delegates
             optionType = OptionType.STRING,
             allowedValues = arrayOf("Beginner", "Novice", "Adept", "Expert")
         ),
-            ]
+        ScriptConfiguration(
+            name = "UsePlankSack",
+            description = "Would you like to use a PlankSack? (start with empty sack)",
+            optionType = OptionType.BOOLEAN
+        )
+    ]
 )
 
 class Script : TreeScript() {
@@ -41,10 +54,12 @@ class Script : TreeScript() {
 
     override val rootComponent: TreeComponent<*> = HasContract(this)
     val logger: Logger = Logger.getLogger(this.javaClass.simpleName)
-    var currentHome: Homes? = Homes.get("Noella")// null
+    var currentHome: Homes? = null
     var firstFloorDone: Boolean = false
     var contractTier by Delegates.notNull<Int>()
-    val steelBars = 3
+    val steelBars = 2
+    var plankSackNumber: Int = 0
+    var usePlankSack = true
 
     override fun onStart() {
         addPaint()
@@ -55,7 +70,30 @@ class Script : TreeScript() {
             "Expert" -> 3
             else -> -1
         }
+        usePlankSack = getOption<Boolean>("UsePlankSack")
+    }
 
+    @com.google.common.eventbus.Subscribe
+    fun inventoryChangedEvent(inventoryChangeEvent: InventoryChangeEvent) {
+        if (!usePlankSack || Bank.opened()) {
+            return
+        }
+        if (inventoryChangeEvent.itemId != PLANK &&
+            inventoryChangeEvent.itemId != OAK_PLANK &&
+            inventoryChangeEvent.itemId != TEAK_PLANK &&
+            inventoryChangeEvent.itemId != MAHOGANY_PLANK
+        ) {
+            return
+        }
+
+        val logger: Logger = Logger.getLogger(this.javaClass.simpleName)
+        logger.info("Change of ${inventoryChangeEvent.itemName} number: ${inventoryChangeEvent.quantityChange}")
+        when (inventoryChangeEvent.quantityChange) {
+            in -3 .. -1 -> {}
+            in 4..28 -> plankSackNumber += -inventoryChangeEvent.quantityChange
+            in -28..-4 -> plankSackNumber += -inventoryChangeEvent.quantityChange
+
+        }
     }
 
     @com.google.common.eventbus.Subscribe
