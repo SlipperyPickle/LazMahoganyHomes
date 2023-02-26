@@ -44,7 +44,7 @@ class Script : TreeScript() {
     var currentHome: Homes? = Homes.get("Noella")// null
     var firstFloorDone: Boolean = false
     var contractTier by Delegates.notNull<Int>()
-    val steelBars = 2
+    val steelBars = 3
 
     override fun onStart() {
         addPaint()
