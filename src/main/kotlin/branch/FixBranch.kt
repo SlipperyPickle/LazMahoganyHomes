@@ -12,7 +12,7 @@ import org.powbot.api.script.tree.TreeComponent
 
 class IsInHome(script: Script) : Branch<Script>(script, "IsInHome") {
     override val successComponent: TreeComponent<Script> = IsBuildWidgetVisible(script)
-    override val failedComponent: TreeComponent<Script> = WalkTo(script, Destination.FIRST_ROOM)
+    override val failedComponent: TreeComponent<Script> = HasAllItems(script)
 
     override fun validate(): Boolean {
         return Homes.inCurrentHome(script.currentHome!!.name)
@@ -52,15 +52,13 @@ class IsNearHomeOwner(script: Script) : Branch<Script>(script, "IsNearHomeOwner"
 
 class IsInCorrectRoom(script: Script) : Branch<Script>(script, "IsInCorrectRoom") {
     override val successComponent: TreeComponent<Script> = Fix(script)
-    override val failedComponent: TreeComponent<Script> = if (script.firstFloorDone) {
-        WalkTo(script, Destination.SECOND_ROOM)
-    } else {
-        WalkTo(script, Destination.FIRST_ROOM)
-    }
+    override val failedComponent: TreeComponent<Script> = if (script.firstFloorDone)
+                WalkTo(script, Destination.FIRST_ROOM) else
+                WalkTo(script, Destination.SECOND_ROOM)
 
     override fun validate(): Boolean {
         val home = script.currentHome!!.name
-        return if (script.firstFloorDone) Homes.inSecondRoom(home) else  Homes.inSecondRoom(home)
+        return Homes.inCorrectRoom(home, script.firstFloorDone)
     }
 }
 

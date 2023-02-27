@@ -1,6 +1,7 @@
 package homes
 
-import Constants.BarbaraDownstairs
+import Constants.BarbaraDownstairsOne
+import Constants.BarbaraDownstairsTwo
 import Constants.BobDownstairs
 import Constants.BobUpstairs
 import Constants.FURNITURE_VARPS
@@ -68,7 +69,7 @@ enum class Homes(
 
     NORMAN(
         "Norman",
-        Tile(3037, 3345, 1),
+        Tile(3035, 3345, 1),
         arrayOf(Rooms.NORMAN_DOWNSTAIRS, Rooms.NORMAN_UPSTAIRS),
         RequiredItems.NORMAN
     ),
@@ -83,7 +84,7 @@ enum class Homes(
     BARBARA(
         "Barbara",
         Tile(1749, 3534, 0),
-        arrayOf(Rooms.BARBARA_DOWNSTAIRS),
+        arrayOf(Rooms.BARBARA_DOWNSTAIRS_ONE, Rooms.BARBARA_DOWNSTAIRS_TWO),
         RequiredItems.BARBARA
     ),
 
@@ -176,10 +177,9 @@ enum class Homes(
             var room = if (firstFloorDone) 1 else 0
             if (firstFloorDone) {
                  room = when (name) {
-                    Homes.JESS.home -> 0
-                    Homes.TAU.home -> 0
-                    Homes.BARBARA.home -> 0
-                    Homes.SARAH.home -> 0
+                    JESS.home -> 0
+                    TAU.home -> 0
+                    SARAH.home -> 0
                     else -> 1
                 }
             }
@@ -432,10 +432,16 @@ enum class Rooms (
         TauDownstairs
     ),
 
-    BARBARA_DOWNSTAIRS(
+    BARBARA_DOWNSTAIRS_ONE(
         "Barbara",
-        Area(Tile(1746, 3540, 0), Tile(1755, 3531, 0)),
-        BarbaraDownstairs
+        Area(Tile(1747, 3536, 0), Tile(1754, 3532, 0)),  //Area(Tile(1746, 3540, 0), Tile(1755, 3531, 0)),
+        BarbaraDownstairsOne
+    ),
+
+    BARBARA_DOWNSTAIRS_TWO(
+        "Barbara",
+        Area(Tile(1747, 3539, 0), Tile(1749, 3537, 0)),  //Area(Tile(1746, 3540, 0), Tile(1755, 3531, 0)),
+        BarbaraDownstairsTwo
     ),
 
     LEELA_UPSTAIRS(

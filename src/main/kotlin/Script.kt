@@ -15,6 +15,8 @@ import org.powbot.api.script.ScriptConfiguration
 import org.powbot.api.script.ScriptManifest
 import org.powbot.api.script.paint.Paint
 import org.powbot.api.script.paint.PaintBuilder
+import org.powbot.api.script.tree.SimpleBranch
+import org.powbot.api.script.tree.SimpleLeaf
 import org.powbot.api.script.tree.TreeComponent
 import org.powbot.api.script.tree.TreeScript
 import org.powbot.mobile.script.ScriptManager
@@ -41,7 +43,7 @@ import kotlin.properties.Delegates
         ),
         ScriptConfiguration(
             name = "UsePlankSack",
-            description = "Would you like to use a PlankSack? (start with empty sack)",
+            description = "Would you like to use a PlankSack?",
             optionType = OptionType.BOOLEAN
         )
     ]
@@ -49,14 +51,14 @@ import kotlin.properties.Delegates
 
 class Script : TreeScript() {
     override val rootComponent: TreeComponent<*> = HasContract(this)
-//    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, SimpleLeaf(this, "") { logger.info("In home: ${Homes.inCurrentHome("Mariah")}"); Condition.sleep(10000)} ) { false }//ShouldGetContract(this)
-//    override val rootComponent: TreeComponent<*> = HasContract(this)
+//    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, SimpleLeaf(this, "") { } ) { false }//ShouldGetContract(this)
+
 
     var currentHome: Homes? = null
     var firstFloorDone: Boolean = false
     var currentTier by Delegates.notNull<Int>()
     val steelBars = 2
-    var plankSackNumber: Int = 0
+    var plankSackNumber: Int = -1
     var usePlankSack = true
     val amysSaw = false
     var lastObject = 0
@@ -122,6 +124,12 @@ class Script : TreeScript() {
             currentHome = null
             firstFloorDone = false
         }
+
+        val matcherPlankSack = Constants.PLANK_SACK_REGEX.matcher(txt)
+
+        if (matcherPlankSack.matches()) {
+            plankSackNumber = matcherPlankSack.group(currentTier + 1).toInt()
+        }
     }
 
     companion object {
@@ -138,8 +146,6 @@ class Script : TreeScript() {
                     .replace("[ ]+".toRegex(), " ")
             )
         }
-
-
     }
 
     private fun addPaint() {

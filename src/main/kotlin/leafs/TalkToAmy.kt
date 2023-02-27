@@ -17,10 +17,10 @@ class TalkToAmy(script: Script) : Leaf<Script>(script, "TalkToAmy") {
     override fun execute() {
         if (Chat.chatting()) {
             val text = when (script.currentTier) {
-                1 -> CONTRACT_BEGINNER
-                2 -> CONTRACT_NOVICE
-                3 -> CONTRACT_ADEPT
-                4 -> CONTRACT_EXPERT
+                0 -> CONTRACT_BEGINNER
+                1 -> CONTRACT_NOVICE
+                2 -> CONTRACT_ADEPT
+                3 -> CONTRACT_EXPERT
                 else -> ""
             }
             Chat.completeChat(text)

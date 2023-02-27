@@ -14,7 +14,7 @@ import org.powbot.api.script.tree.SimpleLeaf
 import org.powbot.api.script.tree.TreeComponent
 
 class HasAllItems(script: Script) : Branch<Script>(script, "HasAllItems") {
-    override val successComponent: TreeComponent<Script> = IsInHome(script)
+    override val successComponent: TreeComponent<Script> = WalkTo(script, Destination.FIRST_ROOM)
     override val failedComponent: TreeComponent<Script> = BankOpened(script)
 
     private fun hasItems(): Boolean {
@@ -24,14 +24,14 @@ class HasAllItems(script: Script) : Branch<Script>(script, "HasAllItems") {
         val hasHammer = Inventory.stream().id(HAMMER).isNotEmpty()
         val hasSaw = Inventory.stream().id(*intArrayOf(SAW, AMYS_SAW)).isNotEmpty()
         val hasPlanks = (Inventory.stream().id(home.getPlank(script.currentTier)).count() + script.plankSackNumber - reqItems[0]) > 0
-        val hasBars = (Inventory.stream().id(STEEL_BAR)).count() >= script.steelBars
+        val hasBars = (Inventory.stream().id(STEEL_BAR)).count() >= reqItems[1]
 
         script.logger("hasItems", "Hammer = $hasHammer Saw = $hasSaw Planks = $hasPlanks Bars = $hasBars")
         return (hasHammer && hasSaw && hasPlanks && hasBars)
     }
 
     override fun validate(): Boolean {
-        return hasItems() //&& !Homes.inCurrentHome(script.currentHome!!.name)
+        return hasItems() && !Homes.inCurrentHome(script.currentHome!!.name)
     }
 }
 

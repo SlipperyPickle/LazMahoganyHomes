@@ -27,7 +27,7 @@ class WalkTo(script: Script, private val location: Destination) : Leaf<Script>(s
 //            return
 //        }
 
-        script.logger("WalkTo", "Walking to ${destination.tile()}")
+        script.logger("WalkTo $location", "Walking to ${destination.tile()}")
 
         DaxWalker.removeBlacklistTeleports(
             Teleport.POH_OUTSIDE_HOSIDIUS,
@@ -41,8 +41,8 @@ class WalkTo(script: Script, private val location: Destination) : Leaf<Script>(s
         )
 
         Movement.builder(destination)
-            .setWalkUntil { destination.distance() < 10 && destination.tile().floor == Players.local().floor() }
-            .setAutoRun(true).move()
+            .setAutoRun(true)
+            .move()
 
     }
 }

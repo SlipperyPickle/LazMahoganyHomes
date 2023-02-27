@@ -14,7 +14,7 @@ import org.powbot.api.rt4.Npcs
 import org.powbot.api.script.tree.Leaf
 import org.powbot.mobile.script.ScriptManager
 
-class TalkToHomeOwner(script: Script) : Leaf<Script>(script, "TalkToAmy") {
+class TalkToHomeOwner(script: Script) : Leaf<Script>(script, "TalkToHomeOwner") {
     override fun execute() {
         if (Chat.chatting()) {
             Chat.completeChat(CONTRACT_FINISH)

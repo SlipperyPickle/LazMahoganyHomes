@@ -6,8 +6,10 @@ object Constants {
     val CONTRACT_PATTERN: Pattern = Pattern.compile("Amy\\|(Please could you g|G)o see (\\w*)[ ,][\\w\\s,-]*[?.] You can get another job once you have furnished \\w* home\\.")
 //    val CONTRACT_FINISHED: Pattern = Pattern.compile("You have completed [\\d,]* contracts with a total of [\\d,]* points?\\.")
     val CONTRACT_FINISHED: Pattern = Pattern.compile("Aaah, nothing like a nice cuppa tea!")
-    const val CONTRACT_FINISH = "Yes, I'd love a cuppa."
+    val PLANK_SACK_REGEX: Pattern = Pattern.compile("Basic planks: ([0-9]+), Oak planks: ([0-9]+), Teak planks: ([0-9]+), Mahogany planks: ([0-9]+)")
 
+
+    const val CONTRACT_FINISH = "Yes, I'd love a cuppa."
     const val CONTRACT_BEGINNER = "Beginner Contract"
     const val CONTRACT_NOVICE = "Novice Contract (Requires 20 Construction)"
     const val CONTRACT_ADEPT = "Adept Contract (Requires 50 Construction)"
@@ -317,17 +319,20 @@ object Constants {
 
     private const val BARBARA_BROKEN_RANGE_REPAIR = 40067
 
-    val BarbaraDownstairs = intArrayOf(
+    val BarbaraDownstairsOne = intArrayOf(
         BARBARA_GRANDFATHER_CLOCK_REPAIR,
         BARBARA_TABLE_REMOVE,
         BARBARA_TABLE_BUILD,
-        BARBARA_BED_REMOVE,
-        BARBARA_BED_BUILD,
         BARBARA_CHAIR_REMOVE,
         BARBARA_CHAIR_BUILD,
         BARBARA_DRAWERS_REMOVE,
         BARBARA_DRAWERS_BUILD,
         BARBARA_BROKEN_RANGE_REPAIR
+    )
+
+    val BarbaraDownstairsTwo = intArrayOf(
+        BARBARA_BED_REMOVE,
+        BARBARA_BED_BUILD
     )
 
     /*
