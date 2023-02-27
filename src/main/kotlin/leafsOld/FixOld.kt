@@ -1,4 +1,4 @@
-package leafs
+package leafsOld
 
 import Constants.BUILD_FURNITURE_COMPONENT
 import Constants.BUILD_FURNITURE_WIDGET
@@ -13,7 +13,7 @@ import org.powbot.api.rt4.Widgets
 import org.powbot.api.rt4.walking.local.Utils.getWalkableNeighbors
 import org.powbot.api.script.tree.Leaf
 
-class Fix(script: Script, private var room: Int) : Leaf<Script>(script, "Fix") {
+class FixOld(script: Script, private var room: Int) : Leaf<Script>(script, "Fix") {
     override fun execute() {
         if (room == 1) {
             room = when (script.currentHome) {
@@ -25,10 +25,10 @@ class Fix(script: Script, private var room: Int) : Leaf<Script>(script, "Fix") {
             }
         }
         val buildWidget =
-            Widgets.widget(BUILD_FURNITURE_WIDGET).component(BUILD_FURNITURE_COMPONENT + script.contractTier)
+            Widgets.widget(BUILD_FURNITURE_WIDGET).component(BUILD_FURNITURE_COMPONENT + script.currentTier)
         if (buildWidget.visible() && buildWidget.interact("Build")) {
             Condition.wait {
-                !Widgets.widget(BUILD_FURNITURE_WIDGET).component(BUILD_FURNITURE_COMPONENT + script.contractTier)
+                !Widgets.widget(BUILD_FURNITURE_WIDGET).component(BUILD_FURNITURE_COMPONENT + script.currentTier)
                     .visible() && Players.local().animation() == -1
             }
         } else {

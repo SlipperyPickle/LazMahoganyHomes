@@ -23,6 +23,11 @@ object Constants {
     const val TEAK_PLANK = 8780
     const val MAHOGANY_PLANK = 8782
 
+    const val HAMMER = 2347
+    const val SAW = 8794
+    const val AMYS_SAW = 24880
+    const val PLANK_SACK = 24882
+
 //    const val PORTAL = 28822
 
     val FURNITURE_VARPS = intArrayOf(10554, 10555, 10556, 10557, 10558, 10559, 10560, 10561)

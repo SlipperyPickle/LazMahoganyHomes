@@ -1,4 +1,4 @@
-package leafs
+package leafsOld
 
 import Script
 import homes.Homes
@@ -6,7 +6,7 @@ import org.powbot.api.rt4.Bank
 import org.powbot.api.rt4.Movement
 import org.powbot.api.script.tree.Leaf
 
-class GoToHome(script: Script) : Leaf<Script>(script, "GoToHome") {
+class GoToHomeOld(script: Script) : Leaf<Script>(script, "GoToHome") {
 
     @Deprecated("OLD")
     override fun execute() {

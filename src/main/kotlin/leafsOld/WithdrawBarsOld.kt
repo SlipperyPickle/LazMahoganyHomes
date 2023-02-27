@@ -1,4 +1,4 @@
-package leafs
+package leafsOld
 
 import Constants.STEEL_BAR
 import Script
@@ -10,7 +10,7 @@ import org.powbot.api.rt4.Item
 import org.powbot.api.script.tree.Leaf
 import org.powbot.mobile.script.ScriptManager
 
-class WithdrawBars(script: Script) : Leaf<Script>(script, "WithdrawBars") {
+class WithdrawBarsOld(script: Script) : Leaf<Script>(script, "WithdrawBars") {
 
     override fun execute() {
         val bars = Bank.stream().id(STEEL_BAR).first()

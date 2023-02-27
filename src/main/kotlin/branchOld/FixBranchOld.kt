@@ -1,10 +1,10 @@
-package branch
+package branchOld
 
 import Script
 import homes.Homes
 import leafs.Destination
-import leafs.Fix
-import leafs.TalkToNPC
+import leafsOld.FixOld
+import leafsOld.TalkToNPCOld
 import leafs.WalkTo
 import org.powbot.api.rt4.Npcs
 import org.powbot.api.script.tree.Branch
@@ -20,7 +20,7 @@ class IsFirstFloorDone(script: Script) : Branch<Script>(script, "IsFirstFloorDon
 }
 
 class IsAtFirstFloor(script: Script) : Branch<Script>(script, "IsAtFirstFloor") {
-    override val successComponent: TreeComponent<Script> = Fix(script, 0)
+    override val successComponent: TreeComponent<Script> = FixOld(script, 0)
     override val failedComponent: TreeComponent<Script> = WalkTo(script, Destination.FIRST_FLOOR)
 
     override fun validate(): Boolean {
@@ -39,7 +39,7 @@ class IsSecondFloorDone(script: Script) : Branch<Script>(script, "IsFirstFloorDo
 }
 
 class IsAtSecondFloor(script: Script) : Branch<Script>(script, "IsAtSecondFloor") {
-    override val successComponent: TreeComponent<Script> = Fix(script, 1)
+    override val successComponent: TreeComponent<Script> = FixOld(script, 1)
     override val failedComponent: TreeComponent<Script> = WalkTo(script, Destination.SECOND_FLOOR)
 
     override fun validate(): Boolean {
@@ -56,7 +56,7 @@ class IsAtSecondFloor(script: Script) : Branch<Script>(script, "IsAtSecondFloor"
 }
 
 class IsAtHomeOwner(script: Script) : Branch<Script>(script, "IsAtHomeOwner") {
-    override val successComponent: TreeComponent<Script> = TalkToNPC(script)
+    override val successComponent: TreeComponent<Script> = TalkToNPCOld(script)
     override val failedComponent: TreeComponent<Script> = WalkTo(script, Destination.HOME_OWNER)
 
     override fun validate(): Boolean {

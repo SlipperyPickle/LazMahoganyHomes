@@ -30,18 +30,19 @@ import org.powbot.api.Tile
 import org.powbot.api.rt4.Players
 import org.powbot.api.rt4.Varpbits
 
-
 enum class Homes(
     val home: String,
     val npcLocation: Tile,
     val rooms: Array<Rooms>,
-    val requiredItems: RequiredItems
+    val requiredItems: RequiredItems,
+//    val stairsTile: Tile
 ) {
     JESS(
         "Jess",
         Tile(2621, 3293, 1),
         arrayOf(Rooms.JESS_UPSTAIRS),
-        RequiredItems.JESS
+        RequiredItems.JESS,
+//        Tile(2622, 3291, 1)
     ),
 
     NOELLA(
@@ -121,6 +122,29 @@ enum class Homes(
         RequiredItems.SARAH
     );
 
+    fun getRequiredItems(name: String?, tier: Int): Array<Int> {
+        val home = Homes.values().firstOrNull { it.name.equals(name, true) }
+        val result = when (tier) {
+            0 -> home!!.requiredItems.beginner
+            1 -> home!!.requiredItems.novice
+            2 -> home!!.requiredItems.adept
+            3 -> home!!.requiredItems.expert
+            else -> arrayOf(-1, -1)
+        }
+        return result
+    }
+
+    fun getPlank(tier: Int): Int {
+        val result = when (tier) {
+            0 -> PLANK
+            1 -> OAK_PLANK
+            2 -> TEAK_PLANK
+            3 -> MAHOGANY_PLANK
+            else -> -1
+        }
+        return result
+    }
+
     companion object {
         fun get(name: String): Homes? = Homes.values().firstOrNull { it.name.equals(name, true) }
 
@@ -147,17 +171,7 @@ enum class Homes(
             return false
         }
 
-        fun requiredItems(name: String?, tier: Int): Array<Int>? {
-            val home = Homes.values().firstOrNull { it.name.equals(name, true) }
-            val result = when (tier) {
-                0 -> home!!.requiredItems.beginner
-                1 -> home!!.requiredItems.novice
-                2 -> home!!.requiredItems.adept
-                3 -> home!!.requiredItems.expert
-                else -> null
-            }
-            return result
-        }
+
 
         fun currentPlank(tier: Int): Int {
             return when (tier) {
@@ -279,18 +293,23 @@ enum class RequiredItems(
         arrayOf(11, 1),
         arrayOf(11, 1),
     );
+//    fun getItems(name: String, tier: Int): Array<Int>? {
+//        val tiers = values().firstOrNull { it.name.equals(name, true) }
+//        when (tier) {
+//            0 -> return tiers?.beginner
+//            1 -> return tiers?.novice
+//            2 -> return tiers?.adept
+//            3 -> return tiers?.expert
+//        }
+//        return null
+//    }
 
     companion object {
-//        fun get(name: String, tier: Int): Array<Int>? {
+//        fun getItems(name: String): IntArray {
 //            val tiers = values().firstOrNull { it.name.equals(name, true) }
-//            when (tier) {
-//                0 -> return tiers?.beginner
-//                1 -> return tiers?.novice
-//                2 -> return tiers?.adept
-//                3 -> return tiers?.expert
-//            }
-//            return null
+//
 //        }
+
 
 //        fun getPlank(tier: Int): Int {
 //            when (tier) {

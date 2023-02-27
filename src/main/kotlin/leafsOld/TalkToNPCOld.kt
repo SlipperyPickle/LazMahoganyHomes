@@ -1,4 +1,4 @@
-package leafs
+package leafsOld
 
 import Constants.CONTRACT_FINISH
 import Script
@@ -7,7 +7,7 @@ import org.powbot.api.rt4.Chat
 import org.powbot.api.rt4.Npcs
 import org.powbot.api.script.tree.Leaf
 
-class TalkToNPC(script: Script) : Leaf<Script>(script, "TalkTo") { //${script.currentHome!!.home}") {
+class TalkToNPCOld(script: Script) : Leaf<Script>(script, "TalkTo") { //${script.currentHome!!.home}") {
 
     override fun execute() {
         val homeOwner = Npcs.stream().name(script.currentHome!!.home).first()

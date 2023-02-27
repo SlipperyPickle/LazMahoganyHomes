@@ -22,12 +22,12 @@ class WalkTo(script: Script, private val location: Destination) : Leaf<Script>(s
             Destination.HOME_OWNER -> Homes.get(script.currentHome!!.name)!!.npcLocation
         }
 
-        script.logger.info("Walking to ${destination.tile()}")
+
         if (destination.distance() < 10 && destination.tile().floor == Players.local().floor()) {
-            script.logger.info("walking not")
             return
         }
 
+        script.logger("WalkTo", "Walking to ${destination.tile()}")
 
         DaxWalker.removeBlacklistTeleports(
             Teleport.POH_OUTSIDE_HOSIDIUS,
@@ -39,11 +39,11 @@ class WalkTo(script: Script, private val location: Destination) : Leaf<Script>(s
             Teleport.ARDOUGNE_TELEPORT,
             Teleport.ARDOUGNE_TELEPORT_TAB
         )
-        if (destination.distance() > 10 || !destination.reachable()) {
-            Movement.builder(destination)
-                .setWalkUntil { destination.distance() < 10 && destination.tile().floor == Players.local().floor() }
-                .setAutoRun(true).move()
-        }
+
+        Movement.builder(destination)
+            .setWalkUntil { destination.distance() < 10 && destination.tile().floor == Players.local().floor() }
+            .setAutoRun(true).move()
+
     }
 }
 

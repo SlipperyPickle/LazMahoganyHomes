@@ -1,4 +1,4 @@
-package leafs
+package leafsOld
 
 import Script
 import org.powbot.api.Area
@@ -6,7 +6,7 @@ import org.powbot.api.Tile
 import org.powbot.api.rt4.Movement
 import org.powbot.api.script.tree.Leaf
 
-class Dummy(script: Script) : Leaf<Script>(script, "Dummy") {
+class DummyOld(script: Script) : Leaf<Script>(script, "Dummy") {
 
     override fun execute() {
 //        script.logger.info("Door at cabinet? ${Objects.doorInBetween(7420)}")
