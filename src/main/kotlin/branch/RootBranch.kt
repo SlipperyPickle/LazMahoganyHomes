@@ -6,7 +6,7 @@ import org.powbot.api.script.tree.TreeComponent
 
 class HasContract(script: Script) : Branch<Script>(script, "HasContract") {
     override val successComponent: TreeComponent<Script> = HasAllItems(script)
-    override val failedComponent: TreeComponent<Script> = TODO()
+    override val failedComponent: TreeComponent<Script> = ShouldWalkToAmy(script)
 
     override fun validate(): Boolean {
         return script.currentHome != null

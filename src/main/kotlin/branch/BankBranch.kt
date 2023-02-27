@@ -6,9 +6,7 @@ import Constants.SAW
 import Constants.STEEL_BAR
 import Script
 import homes.Homes
-import leafs.OpenBank
-import leafs.Destination
-import leafs.WalkTo
+import leafs.*
 import org.powbot.api.rt4.Bank
 import org.powbot.api.rt4.Inventory
 import org.powbot.api.script.tree.Branch
@@ -16,7 +14,7 @@ import org.powbot.api.script.tree.SimpleLeaf
 import org.powbot.api.script.tree.TreeComponent
 
 class HasAllItems(script: Script) : Branch<Script>(script, "HasAllItems") {
-    override val successComponent: TreeComponent<Script> = SimpleLeaf(script, "true") {}
+    override val successComponent: TreeComponent<Script> = IsInHome(script)
     override val failedComponent: TreeComponent<Script> = BankOpened(script)
 
     private fun hasItems(): Boolean {
@@ -33,7 +31,7 @@ class HasAllItems(script: Script) : Branch<Script>(script, "HasAllItems") {
     }
 
     override fun validate(): Boolean {
-        return hasItems() && !Homes.inCurrentHome(script.currentHome!!.name)
+        return hasItems() //&& !Homes.inCurrentHome(script.currentHome!!.name)
     }
 }
 
@@ -82,12 +80,3 @@ class ShouldWithdrawBars(script: Script) : Branch<Script>(script, "ShouldWithdra
         return script.steelBars - Inventory.stream().id(STEEL_BAR).count().toInt() > 0
     }
 }
-
-//class ShouldFillPlankSack(script: Script) : Branch<Script>(script, "ShouldWithdrawBars") {
-//    override val successComponent: TreeComponent<Script> = FillPlankSack(script)
-//    override val failedComponent: TreeComponent<Script> = WithdrawPlanks(script)
-//
-//    override fun validate(): Boolean {
-//        return
-//    }
-//}

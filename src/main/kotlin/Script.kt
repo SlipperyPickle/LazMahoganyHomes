@@ -3,6 +3,7 @@ import Constants.OAK_PLANK
 import Constants.PLANK
 import Constants.TEAK_PLANK
 import branch.HasAllItems
+import branch.HasContract
 import homes.Homes
 import org.powbot.api.event.InventoryChangeEvent
 import org.powbot.api.event.MessageEvent
@@ -47,17 +48,18 @@ import kotlin.properties.Delegates
 )
 
 class Script : TreeScript() {
-    override val rootComponent: TreeComponent<*> = HasAllItems(this) //ShouldGetContract(this)
+    override val rootComponent: TreeComponent<*> = HasContract(this)
 //    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, SimpleLeaf(this, "") { logger.info("In home: ${Homes.inCurrentHome("Mariah")}"); Condition.sleep(10000)} ) { false }//ShouldGetContract(this)
 //    override val rootComponent: TreeComponent<*> = HasContract(this)
 
-    var currentHome: Homes? = Homes.get("Jess")// null
+    var currentHome: Homes? = null
     var firstFloorDone: Boolean = false
     var currentTier by Delegates.notNull<Int>()
     val steelBars = 2
     var plankSackNumber: Int = 0
     var usePlankSack = true
     val amysSaw = false
+    var lastObject = 0
 
     override fun onStart() {
         addPaint()

@@ -1,4 +1,4 @@
-package branch
+package leafs
 
 import Script
 import org.powbot.api.script.tree.Leaf

@@ -171,7 +171,44 @@ enum class Homes(
             return false
         }
 
+        fun inCorrectRoom(name: String, firstFloorDone: Boolean): Boolean {
+            val home = Homes.values().firstOrNull { it.name.equals(name, true) }
+            var room = if (firstFloorDone) 1 else 0
+            if (firstFloorDone) {
+                 room = when (name) {
+                    Homes.JESS.home -> 0
+                    Homes.TAU.home -> 0
+                    Homes.BARBARA.home -> 0
+                    Homes.SARAH.home -> 0
+                    else -> 1
+                }
+            }
+            if (home!!.rooms[room].area.contains(Players.local())) {
+                return true
+            }
+            return false
+        }
 
+
+        fun inFirstRoom(name: String?): Boolean {
+            val home = Homes.values().firstOrNull { it.name.equals(name, true) }
+            if (home != null) {
+                if (home.rooms[0].area.contains(Players.local())) {
+                    return true
+                }
+            }
+            return false
+        }
+
+        fun inSecondRoom(name: String?): Boolean {
+            val home = Homes.values().firstOrNull { it.name.equals(name, true) }
+            if (home != null) {
+                if (home.rooms[1].area.contains(Players.local())) {
+                    return true
+                }
+            }
+            return false
+        }
 
         fun currentPlank(tier: Int): Int {
             return when (tier) {

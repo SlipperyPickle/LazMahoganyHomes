@@ -21,7 +21,7 @@ class IsFirstFloorDone(script: Script) : Branch<Script>(script, "IsFirstFloorDon
 
 class IsAtFirstFloor(script: Script) : Branch<Script>(script, "IsAtFirstFloor") {
     override val successComponent: TreeComponent<Script> = FixOld(script, 0)
-    override val failedComponent: TreeComponent<Script> = WalkTo(script, Destination.FIRST_FLOOR)
+    override val failedComponent: TreeComponent<Script> = WalkTo(script, Destination.FIRST_ROOM)
 
     override fun validate(): Boolean {
         val homeTile = Homes.get(script.currentHome!!.name)!!.rooms[0].area.centralTile
@@ -40,7 +40,7 @@ class IsSecondFloorDone(script: Script) : Branch<Script>(script, "IsFirstFloorDo
 
 class IsAtSecondFloor(script: Script) : Branch<Script>(script, "IsAtSecondFloor") {
     override val successComponent: TreeComponent<Script> = FixOld(script, 1)
-    override val failedComponent: TreeComponent<Script> = WalkTo(script, Destination.SECOND_FLOOR)
+    override val failedComponent: TreeComponent<Script> = WalkTo(script, Destination.SECOND_ROOM)
 
     override fun validate(): Boolean {
         val room = when (script.currentHome) {

@@ -8,6 +8,12 @@ object Constants {
     val CONTRACT_FINISHED: Pattern = Pattern.compile("Aaah, nothing like a nice cuppa tea!")
     const val CONTRACT_FINISH = "Yes, I'd love a cuppa."
 
+    const val CONTRACT_BEGINNER = "Beginner Contract"
+    const val CONTRACT_NOVICE = "Novice Contract (Requires 20 Construction)"
+    const val CONTRACT_ADEPT = "Adept Contract (Requires 50 Construction)"
+    const val CONTRACT_EXPERT = "Expert Contract (Requires 70 Construction)"
+
+
     const val SELECT_CONTRACT_WIDGET = 219
     const val SELECT_CONTRACT_COMPONENT = 1
 

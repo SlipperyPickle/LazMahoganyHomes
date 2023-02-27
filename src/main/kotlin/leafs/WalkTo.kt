@@ -17,15 +17,15 @@ class WalkTo(script: Script, private val location: Destination) : Leaf<Script>(s
         val destination: Locatable = when (location) {
             Destination.AMY -> NEW_CONTRACT_TILE
             Destination.BANK -> BANK_TILE
-            Destination.FIRST_FLOOR -> Homes.get(script.currentHome!!.name)!!.rooms[0].area.centralTile
-            Destination.SECOND_FLOOR -> Homes.get(script.currentHome!!.name)!!.rooms[1].area.centralTile
+            Destination.FIRST_ROOM -> Homes.get(script.currentHome!!.name)!!.rooms[0].area.centralTile
+            Destination.SECOND_ROOM -> Homes.get(script.currentHome!!.name)!!.rooms[1].area.centralTile
             Destination.HOME_OWNER -> Homes.get(script.currentHome!!.name)!!.npcLocation
         }
 
 
-        if (destination.distance() < 10 && destination.tile().floor == Players.local().floor()) {
-            return
-        }
+//        if (destination.distance() < 10 && destination.tile().floor == Players.local().floor()) {
+//            return
+//        }
 
         script.logger("WalkTo", "Walking to ${destination.tile()}")
 
@@ -50,7 +50,7 @@ class WalkTo(script: Script, private val location: Destination) : Leaf<Script>(s
 enum class Destination {
     AMY,
     BANK,
-    FIRST_FLOOR,
-    SECOND_FLOOR,
+    FIRST_ROOM,
+    SECOND_ROOM,
     HOME_OWNER
 }
