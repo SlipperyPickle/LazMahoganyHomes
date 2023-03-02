@@ -1,6 +1,8 @@
 package branch
 
 import Constants.NEW_CONTRACT_TILE
+import Constants.PLANK_SACK
+import Constants.STEEL_BAR
 import Script
 import leafs.*
 import org.powbot.api.rt4.Inventory
@@ -21,7 +23,7 @@ class ShouldCheckPlankSack(script: Script) : Branch<Script>(script, "ShouldCheck
     override val failedComponent: TreeComponent<Script> = ShouldEmptyPlankSack(script)
 
     override fun validate(): Boolean {
-        return script.plankSackNumber == -1
+        return script.plankSackNumber == -1 && Inventory.stream().id(PLANK_SACK).isNotEmpty()
     }
 }
 
@@ -30,6 +32,7 @@ class ShouldEmptyPlankSack(script: Script) : Branch<Script>(script, "ShouldEmpty
     override val failedComponent: TreeComponent<Script> = TalkToAmy(script)
 
     override fun validate(): Boolean {
-        return script.usePlankSack && script.plankSackNumber > 0 && !Inventory.isFull()
+        return script.usePlankSack && script.plankSackNumber > 4 && !Inventory.isFull() && Inventory.stream().id(
+            STEEL_BAR).count() > 2
     }
 }

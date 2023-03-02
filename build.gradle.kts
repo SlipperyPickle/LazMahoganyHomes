@@ -5,7 +5,7 @@ plugins {
     application
 }
 
-group = "org.example"
+group = "org.laz"
 version = "1.0-SNAPSHOT"
 
 repositories {

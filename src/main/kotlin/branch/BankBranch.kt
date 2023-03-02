@@ -10,11 +10,10 @@ import leafs.*
 import org.powbot.api.rt4.Bank
 import org.powbot.api.rt4.Inventory
 import org.powbot.api.script.tree.Branch
-import org.powbot.api.script.tree.SimpleLeaf
 import org.powbot.api.script.tree.TreeComponent
 
 class HasAllItems(script: Script) : Branch<Script>(script, "HasAllItems") {
-    override val successComponent: TreeComponent<Script> = WalkTo(script, Destination.FIRST_ROOM)
+    override val successComponent: TreeComponent<Script> = WalkTo(script, Destination.HOME)
     override val failedComponent: TreeComponent<Script> = BankOpened(script)
 
     private fun hasItems(): Boolean {
@@ -31,7 +30,7 @@ class HasAllItems(script: Script) : Branch<Script>(script, "HasAllItems") {
     }
 
     override fun validate(): Boolean {
-        return hasItems() && !Homes.inCurrentHome(script.currentHome!!.name)
+        return hasItems() && !Homes.inCurrentHome(script.currentHome!!.name) && !Bank.opened()
     }
 }
 

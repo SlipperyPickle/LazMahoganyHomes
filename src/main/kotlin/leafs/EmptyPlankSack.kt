@@ -3,8 +3,6 @@ package leafs
 import Constants.PLANK_SACK
 import Script
 import org.powbot.api.Condition
-import org.powbot.api.rt4.Bank
-import org.powbot.api.rt4.Camera
 import org.powbot.api.rt4.Inventory
 import org.powbot.api.script.tree.Leaf
 
@@ -15,6 +13,11 @@ class EmptyPlankSack(script: Script) : Leaf<Script>(script, "OpenBank") {
         if (plankSack.valid() && plankSack.interact("Empty")) {
             Condition.wait { Inventory.occupiedSlotCount() != invCount }
         }
+
+        //a check just to be sure
+        if (plankSack.valid()) plankSack.interact("Check")
+
+
     }
 }
 

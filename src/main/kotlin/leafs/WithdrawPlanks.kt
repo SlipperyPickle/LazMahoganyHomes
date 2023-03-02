@@ -36,17 +36,18 @@ class WithdrawPlanks(script: Script) : Leaf<Script>(script, "WithdrawPlanks") {
             repeat(2) {
                 Bank.withdraw(home.getPlank(script.currentTier), Bank.Amount.ALL)
                 Condition.wait { Inventory.isFull() }
-                Bank.close()
-                Condition.wait { !Bank.opened() }
-                plankSack.interact("Fill")
+//                Condition.wait { !Bank.opened() }
+                plankSack.interact("Use")
                 Condition.wait { !Inventory.isFull() }
-                Bank.open()
-                Condition.wait { Bank.opened() }
+//                Bank.open()
+//                Condition.wait { Bank.opened() }
             }
         }
         if (!Inventory.isFull()) {
             Bank.withdraw(home.getPlank(script.currentTier), Bank.Amount.ALL)
         }
+
+        Bank.close()
     }
 }
 
