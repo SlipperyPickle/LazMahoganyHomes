@@ -1,10 +1,9 @@
 package branch
 
-import Constants.MAHOGANY_PLANK
-import Constants.OAK_PLANK
-import Constants.PLANK
+import Constants.AMYS_SAW
+import Constants.HAMMER
+import Constants.SAW
 import Constants.STEEL_BAR
-import Constants.TEAK_PLANK
 import Script
 import homes.Homes
 import leafs.*
@@ -13,55 +12,30 @@ import org.powbot.api.rt4.Inventory
 import org.powbot.api.script.tree.Branch
 import org.powbot.api.script.tree.TreeComponent
 
-class InCurrentHome(script: Script): Branch<Script>(script, "InCurrentHome?") {
-    override val successComponent: TreeComponent<Script> = IsFirstFloorDone(script)
-    override val failedComponent: TreeComponent<Script> = HasItems(script)
-
-    override fun validate(): Boolean {
-        return (script.currentHome != null && Homes.inCurrentHome(script.currentHome!!.name))
-    }
-}
-
-class HasItems(script: Script) : Branch<Script>(script, "HasItems?") {
-    override val successComponent: TreeComponent<Script> = IsAtFirstFloor(script)
+class HasAllItems(script: Script) : Branch<Script>(script, "HasAllItems") {
+    override val successComponent: TreeComponent<Script> = WalkTo(script, Destination.HOME)
     override val failedComponent: TreeComponent<Script> = BankOpened(script)
 
-    private fun hasRequiredItems(): Boolean {
-        val currentTier = script.contractTier
-        val home = script.currentHome?.name
-        if (!home.isNullOrEmpty()) {
-            val itemsNeeded = Homes.requiredItems(home, currentTier)
+    private fun hasItems(): Boolean {
+        val home = script.currentHome!!
+        val reqItems = home.getRequiredItems(home.home, script.currentTier)
 
-            val numberSteelBars = Inventory.stream().id(STEEL_BAR).toList().size
-            script.logger.info(
-                "Current steel bars: $numberSteelBars number of planks: ${
-                    Inventory.stream().id(Inventory.stream().id(TEAK_PLANK).toList().size)
-                }"
-            )
+        val hasHammer = Inventory.stream().id(HAMMER).isNotEmpty()
+        val hasSaw = Inventory.stream().id(*intArrayOf(SAW, AMYS_SAW)).isNotEmpty()
+        val hasPlanks = (Inventory.stream().id(home.getPlank(script.currentTier)).count() + script.plankSackNumber - reqItems[0]) > 0
+        val hasBars = (Inventory.stream().id(STEEL_BAR)).count() >= reqItems[1]
 
-            when (currentTier) {
-                0 -> return ((Inventory.stream().id(PLANK).toList().size >= itemsNeeded!![0]) &&
-                        (numberSteelBars >= itemsNeeded[1]))
-
-                1 -> return ((Inventory.stream().id(OAK_PLANK).toList().size >= itemsNeeded!![0]) &&
-                        (numberSteelBars >= itemsNeeded[1]))
-
-                2 -> return ((Inventory.stream().id(TEAK_PLANK).toList().size >= itemsNeeded!![0]) &&
-                        (numberSteelBars >= itemsNeeded[1]))
-
-                3 -> return ((Inventory.stream().id(MAHOGANY_PLANK).toList().size >= itemsNeeded!![0]) &&
-                        (numberSteelBars >= itemsNeeded[1]))
-            }
-        }
-        return false
+        script.logger("hasItems", "Hammer = $hasHammer Saw = $hasSaw Planks = $hasPlanks Bars = $hasBars")
+        return (hasHammer && hasSaw && hasPlanks && hasBars)
     }
 
     override fun validate(): Boolean {
-        return hasRequiredItems()
+        return hasItems() && !Homes.inCurrentHome(script.currentHome!!.name) && !Bank.opened()
     }
 }
+
 class BankOpened(script: Script) : Branch<Script>(script, "BankOpened") {
-    override val successComponent: TreeComponent<Script> = ShouldWithdrawBars(script)
+    override val successComponent: TreeComponent<Script> = ShouldWithdrawSaw(script)
     override val failedComponent: TreeComponent<Script> = IsNearBank(script)
 
     override fun validate(): Boolean {
@@ -70,29 +44,38 @@ class BankOpened(script: Script) : Branch<Script>(script, "BankOpened") {
 }
 
 class IsNearBank(script: Script) : Branch<Script>(script, "IsNearBank") {
-    override val successComponent: TreeComponent<Script> = Banking(script) //SimpleLeaf(script, "OpenBank") { if (!Bank.open()) Camera.angleToLocatable(Bank.nearest()) }
+    override val successComponent: TreeComponent<Script> = OpenBank(script)
     override val failedComponent: TreeComponent<Script> = WalkTo(script, Destination.BANK)
 
     override fun validate(): Boolean {
         val bank = Bank.nearest()
-        return bank.distance() < 10 && bank.tile().matrix().inViewport()
+        return (bank.distance() < 10 && bank.tile().matrix().inViewport())
+    }
+}
+
+class ShouldWithdrawSaw(script: Script) : Branch<Script>(script, "ShouldWithdrawSaw") {
+    override val successComponent: TreeComponent<Script> = WithdrawSaw(script)
+    override val failedComponent: TreeComponent<Script> = ShouldWithdrawHammer(script)
+
+    override fun validate(): Boolean {
+        return Inventory.stream().id(*intArrayOf(SAW, AMYS_SAW)).isEmpty()
+    }
+}
+
+class ShouldWithdrawHammer(script: Script) : Branch<Script>(script, "ShouldWithdrawHammer") {
+    override val successComponent: TreeComponent<Script> = WithdrawHammer(script)
+    override val failedComponent: TreeComponent<Script> = ShouldWithdrawBars(script)
+
+    override fun validate(): Boolean {
+        return Inventory.stream().id(HAMMER).isEmpty()
     }
 }
 
 class ShouldWithdrawBars(script: Script) : Branch<Script>(script, "ShouldWithdrawBars") {
     override val successComponent: TreeComponent<Script> = WithdrawBars(script)
-    override val failedComponent: TreeComponent<Script> = ShouldWithdrawPlanks(script)
+    override val failedComponent: TreeComponent<Script> = WithdrawPlanks(script)
 
     override fun validate(): Boolean {
-        return (2 - Inventory.stream().id(STEEL_BAR).count()) > 0
-    }
-}
-
-class ShouldWithdrawPlanks(script: Script) : Branch<Script>(script, "ShouldWithdrawPlanks") {
-    override val successComponent: TreeComponent<Script> = WithdrawPlanks(script)
-    override val failedComponent: TreeComponent<Script> = IsNearBank(script)
-
-    override fun validate(): Boolean {
-        return Bank.opened()
+        return script.steelBars - Inventory.stream().id(STEEL_BAR).count().toInt() > 0
     }
 }

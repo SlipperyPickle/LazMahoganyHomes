@@ -1,10 +1,10 @@
+//import leafs.Dummy
 import Constants.MAHOGANY_PLANK
 import Constants.OAK_PLANK
 import Constants.PLANK
 import Constants.TEAK_PLANK
 import branch.HasContract
 import homes.Homes
-import leafs.Dummy
 import org.powbot.api.event.InventoryChangeEvent
 import org.powbot.api.event.MessageEvent
 import org.powbot.api.rt4.Bank
@@ -15,10 +15,11 @@ import org.powbot.api.script.ScriptConfiguration
 import org.powbot.api.script.ScriptManifest
 import org.powbot.api.script.paint.Paint
 import org.powbot.api.script.paint.PaintBuilder
-import org.powbot.api.script.tree.SimpleBranch
-import org.powbot.api.script.tree.SimpleLeaf
 import org.powbot.api.script.tree.TreeComponent
 import org.powbot.api.script.tree.TreeScript
+import org.powbot.dax.api.DaxWalker
+import org.powbot.dax.teleports.Teleport
+import org.powbot.mobile.script.ScriptManager
 import java.util.logging.Logger
 import java.util.regex.Pattern
 import kotlin.properties.Delegates
@@ -35,92 +36,127 @@ import kotlin.properties.Delegates
 @ScriptConfiguration.List(
     [
         ScriptConfiguration(
-            name = "TierSelection",
+            name = "Tier",
             description = "Select the tier you would like to use.",
             optionType = OptionType.STRING,
             allowedValues = arrayOf("Beginner", "Novice", "Adept", "Expert")
         ),
         ScriptConfiguration(
-            name = "UsePlankSack",
-            description = "Would you like to use a PlankSack? (start with empty sack)",
+            name = "Use planksack",
+            description = "Would you like to use a PlankSack?",
             optionType = OptionType.BOOLEAN
+        ),
+        ScriptConfiguration(
+            name = "Steel bars",
+            description = "Number of steel bars to use.",
+            optionType = OptionType.INTEGER,
+            defaultValue = "2"
         )
     ]
 )
 
 class Script : TreeScript() {
+        override val rootComponent: TreeComponent<*> = HasContract(this)
 //    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, Dummy(this) ) { false }//ShouldGetContract(this)
-//    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, SimpleLeaf(this, "") { logger.info("In home: ${Homes.inCurrentHome("Mariah")}"); Condition.sleep(10000)} ) { false }//ShouldGetContract(this)
 
-    override val rootComponent: TreeComponent<*> = HasContract(this)
-    val logger: Logger = Logger.getLogger(this.javaClass.simpleName)
+
     var currentHome: Homes? = null
     var firstFloorDone: Boolean = false
-    var contractTier by Delegates.notNull<Int>()
-    val steelBars = 2
-    var plankSackNumber: Int = 0
+    var currentTier by Delegates.notNull<Int>()
+    var steelBars = 2
+    var plankSackNumber: Int = -1
     var usePlankSack = true
+    val amysSaw = false
+//    val currentFurniture = Ross.AllRoss.toMutableList()
 
     override fun onStart() {
         addPaint()
-        contractTier = when (getOption<String>("TierSelection")) {
+        currentTier = when (getOption<String>("Tier")) {
             "Beginner" -> 0
             "Novice" -> 1
             "Adept" -> 2
             "Expert" -> 3
             else -> -1
         }
-        usePlankSack = getOption<Boolean>("UsePlankSack")
+        usePlankSack = getOption<Boolean>("Use planksack")
+        steelBars = getOption<Int>("Steel bars")
+        DaxWalker.removeBlacklistTeleports(
+            Teleport.POH_OUTSIDE_HOSIDIUS,
+            Teleport.POH_OUTSIDE_HOSIDIUS_TAB,
+            Teleport.VARROCK_TELEPORT,
+            Teleport.VARROCK_TELEPORT_TAB,
+            Teleport.FALADOR_TELEPORT,
+            Teleport.FALADOR_TELEPORT_TAB,
+            Teleport.ARDOUGNE_TELEPORT,
+            Teleport.ARDOUGNE_TELEPORT_TAB
+        )
     }
 
     @com.google.common.eventbus.Subscribe
     fun inventoryChangedEvent(inventoryChangeEvent: InventoryChangeEvent) {
-        if (!usePlankSack || Bank.opened()) {
+        if (!usePlankSack) { //|| Bank.opened()
             return
         }
         if (inventoryChangeEvent.itemId != PLANK &&
             inventoryChangeEvent.itemId != OAK_PLANK &&
             inventoryChangeEvent.itemId != TEAK_PLANK &&
-            inventoryChangeEvent.itemId != MAHOGANY_PLANK
-        ) {
+            inventoryChangeEvent.itemId != MAHOGANY_PLANK) {
             return
         }
 
         val logger: Logger = Logger.getLogger(this.javaClass.simpleName)
         logger.info("Change of ${inventoryChangeEvent.itemName} number: ${inventoryChangeEvent.quantityChange}")
-        when (inventoryChangeEvent.quantityChange) {
-            in -3 .. -1 -> {}
-            in 4..28 -> plankSackNumber += -inventoryChangeEvent.quantityChange
-            in -28..-4 -> plankSackNumber += -inventoryChangeEvent.quantityChange
 
+        if (Bank.opened()) {
+            if (inventoryChangeEvent.quantityChange in -28 .. -5) {
+                plankSackNumber += -inventoryChangeEvent.quantityChange
+            }
+        } else {
+            if (inventoryChangeEvent.quantityChange in 5 .. 28) {
+                plankSackNumber += -inventoryChangeEvent.quantityChange
+            }
         }
+
+
+//        when (inventoryChangeEvent.quantityChange) {
+//            in -4 .. 4 -> {}
+//            in 5..28 -> plankSackNumber += -inventoryChangeEvent.quantityChange
+//            in -28..-5 -> plankSackNumber += -inventoryChangeEvent.quantityChange
+//
+//        }
     }
 
     @com.google.common.eventbus.Subscribe
     fun messageReceived(msg: MessageEvent) {
         val txt = msg.message.sanitizeMultilineText()
-        log.info("\n messageReceived() \n Type: ${msg.type} \n TXT: $txt")
+
         val matcherStart = Constants.CONTRACT_PATTERN.matcher(txt)
         if (matcherStart.matches()) {
 
             val location: String = matcherStart.group(2)
-            logger.info("New task = $location")
             try {
                 val home = Homes.get(location)
-                log.info("New home: $home")
+                logger("messageReceived", "New home = $home")
                 currentHome = home
             } catch (e: NullPointerException) {
-                log.info("Can not parse home!")
+                logger("messageReceived", "Can not parse home!")
+                ScriptManager.stop()
             }
         } else {
-            logger.info("No new task found with: $txt")
+            logger("messageReceived", "No new task found with: $txt")
         }
 
         val matcherFinished = Constants.CONTRACT_FINISHED.matcher(txt)
         if (matcherFinished.matches()) {
-            logger.info("Task finished")
+            logger("messageReceived", "Task finished")
             currentHome = null
             firstFloorDone = false
+        }
+
+        val matcherPlankSack = Constants.PLANK_SACK_REGEX.matcher(txt)
+
+        if (matcherPlankSack.matches()) {
+            plankSackNumber = matcherPlankSack.group(currentTier + 1).toInt()
         }
     }
 
@@ -141,17 +177,38 @@ class Script : TreeScript() {
     }
 
     private fun addPaint() {
-        val p: Paint = PaintBuilder.newBuilder()
-            .trackSkill(Skill.Construction)
-            .addString("Last leaf:") { lastLeaf.name }
-            .addString("Current Home:") { currentHome?.home ?: "Null" }
-            .addString("Furniture left:") { Homes.furnitureLeft().toString()}
-            .addString("Current Tier:") { contractTier.toString() }
-            .y(45)
-            .x(40)
-            .build()
-        addPaint(p)
+        if (usePlankSack) {
+            val p: Paint = PaintBuilder.newBuilder()
+                .trackSkill(Skill.Construction)
+                .addString("Last leaf:") { lastLeaf.name }
+                .addString("Current Home:") { currentHome?.home ?: "Null" }
+                .addString("Furniture left:") { Homes.furnitureLeft().toString() }
+                .addString("Current Tier:") { currentTier.toString() }
+                .addString("PlankSack:") { plankSackNumber.toString() }
+                .y(45)
+                .x(40)
+                .build()
+            addPaint(p)
+        } else {
+            val p: Paint = PaintBuilder.newBuilder()
+                .trackSkill(Skill.Construction)
+                .addString("Last leaf:") { lastLeaf.name }
+                .addString("Current Home:") { currentHome?.home ?: "Null" }
+                .addString("Furniture left:") { Homes.furnitureLeft().toString() }
+                .addString("Current Tier:") { currentTier.toString() }
+                .y(45)
+                .x(40)
+                .build()
+            addPaint(p)
+        }
     }
+
+    fun logger(name: String, message: String) {
+        val logger = Logger.getLogger(name)
+        logger.info(message)
+    }
+
+
 }
 
 fun main() {

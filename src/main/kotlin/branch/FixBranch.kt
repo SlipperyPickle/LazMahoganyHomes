@@ -4,62 +4,52 @@ import Script
 import homes.Homes
 import leafs.Destination
 import leafs.Fix
-import leafs.TalkToNPC
+import leafs.TalkToHomeOwner
 import leafs.WalkTo
 import org.powbot.api.rt4.Npcs
 import org.powbot.api.script.tree.Branch
 import org.powbot.api.script.tree.TreeComponent
 
-class IsFirstFloorDone(script: Script) : Branch<Script>(script, "IsFirstFloorDone") {
-    override val successComponent: TreeComponent<Script> = IsSecondFloorDone(script)
-    override val failedComponent: TreeComponent<Script> = IsAtFirstFloor(script)
+class IsInHome(script: Script) : Branch<Script>(script, "IsInHome") {
+    override val successComponent: TreeComponent<Script> = IsHomeDone(script)
+    override val failedComponent: TreeComponent<Script> = HasAllItems(script)
 
     override fun validate(): Boolean {
-        return script.firstFloorDone || Homes.furnitureLeft() == 0
+        return Homes.inCurrentHome(script.currentHome!!.name)
     }
 }
 
-class IsAtFirstFloor(script: Script) : Branch<Script>(script, "IsAtFirstFloor") {
-    override val successComponent: TreeComponent<Script> = Fix(script, 0)
-    override val failedComponent: TreeComponent<Script> = WalkTo(script, Destination.FIRST_FLOOR)
+class IsHomeDone(script: Script) : Branch<Script>(script, "IsHomeDone") {
+    override val successComponent: TreeComponent<Script> = IsNearHomeOwner(script)
+    override val failedComponent: TreeComponent<Script> = Fix(script)
 
     override fun validate(): Boolean {
-        val homeTile = Homes.get(script.currentHome!!.name)!!.rooms[0].area.centralTile
-        return homeTile.distance() < 7
+        return Homes.furnitureLeft() == 0
     }
 }
 
-class IsSecondFloorDone(script: Script) : Branch<Script>(script, "IsFirstFloorDone") {
-    override val successComponent: TreeComponent<Script> = IsAtHomeOwner(script)
-    override val failedComponent: TreeComponent<Script> = IsAtSecondFloor(script)
-
-    override fun validate(): Boolean {
-        return script.currentHome != null && Homes.furnitureLeft() == 0
-    }
-}
-
-class IsAtSecondFloor(script: Script) : Branch<Script>(script, "IsAtSecondFloor") {
-    override val successComponent: TreeComponent<Script> = Fix(script, 1)
-    override val failedComponent: TreeComponent<Script> = WalkTo(script, Destination.SECOND_FLOOR)
-
-    override fun validate(): Boolean {
-        val room = when (script.currentHome) {
-            Homes.JESS -> 0
-            Homes.TAU -> 0
-            Homes.BARBARA -> 0
-            Homes.SARAH -> 0
-            else -> 1
-        }
-        val homeTile = Homes.get(script.currentHome!!.name)!!.rooms[room].area.centralTile
-        return homeTile.distance() < 7
-    }
-}
-
-class IsAtHomeOwner(script: Script) : Branch<Script>(script, "IsAtHomeOwner") {
-    override val successComponent: TreeComponent<Script> = TalkToNPC(script)
+class IsNearHomeOwner(script: Script) : Branch<Script>(script, "IsNearHomeOwner") {
+    override val successComponent: TreeComponent<Script> = TalkToHomeOwner(script)
     override val failedComponent: TreeComponent<Script> = WalkTo(script, Destination.HOME_OWNER)
 
     override fun validate(): Boolean {
-        return Npcs.stream().name(script.currentHome!!.home).isNotEmpty()
+        val homeOwner = Npcs.stream().name(script.currentHome!!.name).firstOrNull()
+        return homeOwner != null && homeOwner.inViewport()
     }
 }
+//
+//class IsInCorrectRoom(script: Script) : Branch<Script>(script, "IsInCorrectRoom") {
+//    override val successComponent: TreeComponent<Script> = Fix(script)
+//    override val failedComponent: TreeComponent<Script> = if (script.firstFloorDone)
+//                WalkTo(script, Destination.FIRST_ROOM) else
+//                WalkTo(script, Destination.SECOND_ROOM)
+//
+//    override fun validate(): Boolean {
+//        val home = script.currentHome!!.name
+//        return Homes.inCorrectRoom(home, script.firstFloorDone)
+//    }
+//}
+
+
+
+

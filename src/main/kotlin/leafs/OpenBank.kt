@@ -6,12 +6,10 @@ import org.powbot.api.rt4.Bank
 import org.powbot.api.rt4.Camera
 import org.powbot.api.script.tree.Leaf
 
-class Banking(script: Script) : Leaf<Script>(script, "Banking") {
+class OpenBank(script: Script) : Leaf<Script>(script, "OpenBank") {
     override fun execute() {
-        if(Bank.inViewport() && Bank.open()) {
+        if(Bank.open()) {
             Condition.wait { Bank.opened() }
-        } else {
-            Camera.turnTo(Bank.nearest().tile())
         }
     }
 }

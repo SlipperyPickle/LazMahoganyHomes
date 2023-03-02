@@ -3,67 +3,79 @@ package leafs
 import Constants.BUILD_FURNITURE_COMPONENT
 import Constants.BUILD_FURNITURE_WIDGET
 import Script
-import extensions.doorInBetween
+import homes.Furniture
 import homes.Homes
 import org.powbot.api.Condition
-import org.powbot.api.rt4.Movement
 import org.powbot.api.rt4.Objects
 import org.powbot.api.rt4.Players
 import org.powbot.api.rt4.Widgets
-import org.powbot.api.rt4.walking.local.Utils.getWalkableNeighbors
 import org.powbot.api.script.tree.Leaf
+import org.powbot.mobile.script.ScriptManager
 
-class Fix(script: Script, private var room: Int) : Leaf<Script>(script, "Fix") {
+class Fix(script: Script) : Leaf<Script>(script, "Fix") {
     override fun execute() {
-        if (room == 1) {
-            room = when (script.currentHome) {
-                Homes.JESS -> 0
-                Homes.TAU -> 0
-                Homes.BARBARA -> 0
-                Homes.SARAH -> 0
-                else -> 1
-            }
-        }
-        val buildWidget =
-            Widgets.widget(BUILD_FURNITURE_WIDGET).component(BUILD_FURNITURE_COMPONENT + script.contractTier)
-        if (buildWidget.visible() && buildWidget.interact("Build")) {
-            Condition.wait {
-                !Widgets.widget(BUILD_FURNITURE_WIDGET).component(BUILD_FURNITURE_COMPONENT + script.contractTier)
-                    .visible() && Players.local().animation() == -1
-            }
-        } else {
-            val furnitureIds = Homes.get(script.currentHome!!.name)!!.rooms[room].objects
-            val furnitureObject = Objects.stream().id(*furnitureIds).filtered { it.distance() < 15 }.nearest().first()
 
-            val walkableTile = furnitureObject.getWalkableNeighbors(allowSelf = true)
-                .minByOrNull { it.distanceTo(Players.local().tile()) }
-            if (script.currentHome == Homes.BARBARA){
-                val door = Objects.stream().name("Door").action("Open").filtered { it.distance() < 10 }.first()
-                if (door.valid()) {
-                    door.interact("Open")
-                    Condition.wait( {door.actions().contains("Close") }, 400, 10)
-                }
+        val furniture = Furniture.getFurniture(script.currentHome!!)
+        furniture.forEach forEach@{
+            if (ScriptManager.isStopping()) {
+                return
             }
-            if (furnitureObject.valid()) {
-                //NOT bob,
-                when (script.currentHome) {
-                    Homes.JESS, Homes.MARIAH, Homes.JEFF -> Objects.doorInBetween(furnitureObject.id)
-                    else -> {}
-                }
 
-//                if (Objects.doorInBetween(furnitureObject.id)) {
-//                    Objects.getDoor(furnitureObject.id)!!.interact("Open")
-                if (furnitureObject.inViewport() && furnitureObject.click()) {
-                    Condition.wait { !Players.local().inMotion() && Players.local().animation() == -1 }
+            val obj = Objects.stream().id(it.id).at(it.tile).action(it.action).nearest().first()
+            if (script.currentHome == Homes.NOELLA && obj.distance() > 8) return@forEach
+            script.logger("DUMMY", "tile on ${obj.name} on tile ${obj.tile}")
 
+            if (obj.valid() && obj.interact(it.action)) {
+                val wid = Widgets.widget(BUILD_FURNITURE_WIDGET).component(BUILD_FURNITURE_COMPONENT +
+                        script.currentTier)
+                if (it.action == "Build") {
+                    script.logger("DUMMY", "Waiting for widget")
+                    Condition.wait ({ wid.refresh().visible() }, 200, 20)
                 } else {
-                    Movement.step(walkableTile!!)
+                    script.logger("DUMMY", "Waiting for object despawn")
+                    Condition.wait ({ !obj.refresh().valid() && Players.local().animation() == -1 }, 200, 20)
                 }
-            } else {
-                script.firstFloorDone = true
+                if (wid.refresh().visible()) {
+                    if (wid.refresh().interact("Build")) {
+                        Condition.wait ({ !wid.refresh().visible() && Players.local().animation() == -1 }, 200, 20)
+                    }
+                }
             }
-
+            if (obj.valid()) {
+                return
+            }
         }
     }
 }
 
+
+//        val room = if (script.firstFloorDone) 1 else 0
+//        val furnitureIds = Homes.get(script.currentHome!!.name)!!.rooms[room].objects
+//        val furnitureObject = Objects.stream().id(*furnitureIds).filtered { it.distance() < 15 }.nearest().first()
+////        script.logger("Fix", "Found object: ${furnitureObject.valid()} name = ${furnitureObject.actions() } at ${furnitureObject.tile}")
+////        script.logger("Fix", "Object actions sanitized: ${furnitureObject.actions().filter { it == "Remove" || it == "Build"|| it == "Repair" }[0]}")
+//
+//        if (furnitureObject.valid()) {
+//            if (script.lastObject == furnitureObject.id) {
+//                Objects.doorInBetween(furnitureObject.id)
+//                script.lastObject = -1
+//            } else {
+//                val interact = furnitureObject.actions().forEach {  }
+//                getInteraction(furnitureObject.actions())
+//                val actions = arrayOf("Remove", "Build", "Repair")
+//               if (furnitureObject.inViewport()) {
+//                   for (action in actions) {
+//                       if (furnitureObject.interact(action)) {
+//                           Condition.wait { !Players.local().inMotion() && Players.local().animation() == -1 }
+//                           script.lastObject = furnitureObject.id()
+//                       }
+//                   }
+//               }
+//
+//
+//
+//
+//            }
+//        } else {
+//            script.firstFloorDone = true
+//        }
