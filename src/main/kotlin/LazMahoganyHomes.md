@@ -1,6 +1,8 @@
 Instructions
 
     Start with runes/rune pouch/tablets
+    Zoom in halfway
+    Works with carpenter's outfit
 
 Features
 
@@ -9,5 +11,4 @@ Features
     
 ToDo
     
-    Fix plank when <6 planks left
-    Fix walking to Bob
+    Set camera zoom

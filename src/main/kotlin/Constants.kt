@@ -5,7 +5,8 @@ import java.util.regex.Pattern
 object Constants {
     val CONTRACT_PATTERN: Pattern = Pattern.compile("Amy\\|(Please could you g|G)o see (\\w*)[ ,][\\w\\s,-]*[?.] You can get another job once you have furnished \\w* home\\.")
     val CONTRACT_FINISHED: Pattern = Pattern.compile("Aaah, nothing like a nice cuppa tea!")
-    val PLANK_SACK_REGEX: Pattern = Pattern.compile("Basic planks: ([0-9]+), Oak planks: ([0-9]+), Teak planks: ([0-9]+), Mahogany planks: ([0-9]+)")
+    //val PLANK_SACK_REGEX: Pattern = Pattern.compile("Basic planks: \\d, Oak planks: \\d, Teak planks: \\d, Mahogany planks: \\d")
+    val WRONG_CONTRACT: Pattern = Pattern.compile("You shouldn't build that type of furniture on this tier contract.")
 
     const val CONTRACT_FINISH = "Yes, I'd love a cuppa."
     const val CONTRACT_BEGINNER = "Beginner Contract"

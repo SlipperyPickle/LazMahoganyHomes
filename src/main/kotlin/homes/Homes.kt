@@ -13,6 +13,7 @@ import org.powbot.api.rt4.Varpbits
 
 enum class Homes(
     val home: String,
+    val npcID: Int,
     val npcLocation: Tile,
     val startTile: Tile,
     val rooms: Array<Area>,
@@ -20,6 +21,7 @@ enum class Homes(
 ) {
     JESS(
         "Jess",
+        10421,
         Tile(2621, 3293, 1),
         Tile(2622, 3291, 1),
         arrayOf(
@@ -30,6 +32,7 @@ enum class Homes(
 
     NOELLA(
         "Noella",
+        10419,
         Tile(2655, 3321, 0),
         Tile(2665, 3321, 1),
         arrayOf(
@@ -42,6 +45,7 @@ enum class Homes(
 
     ROSS(
         "Ross",
+        10420,
         Tile(2614, 3317, 0),
         Tile(2617, 3316, 1),
         arrayOf(
@@ -53,6 +57,7 @@ enum class Homes(
 
     LARRY(
         "Larry",
+        10418,
         Tile(3037, 3363, 0),
         Tile(3035, 3364, 1),
         arrayOf(
@@ -64,6 +69,7 @@ enum class Homes(
 
     NORMAN(
         "Norman",
+        3266,
         Tile(3035, 3345, 1),
         Tile(3037, 3346, 0),
         arrayOf(
@@ -75,6 +81,7 @@ enum class Homes(
 
     TAU(
         "Tau",
+        10417,
         Tile(3046, 3346, 0),
         Tile(3047, 3348, 0),
         arrayOf(
@@ -85,6 +92,7 @@ enum class Homes(
 
     BARBARA(
         "Barbara",
+        10424,
         Tile(1749, 3534, 0),
         Tile(1747, 3535, 0),
         arrayOf(
@@ -96,6 +104,7 @@ enum class Homes(
 
     LEELA(
         "Leela",
+        10423,
         Tile(1785, 3593, 0),
         Tile(1787, 3592, 1),
         arrayOf(
@@ -107,6 +116,7 @@ enum class Homes(
 
     MARIAH(
         "Mariah",
+        10422,
         Tile(1765, 3621, 0),
         Tile(1766, 3620, 1),
         arrayOf(
@@ -118,6 +128,7 @@ enum class Homes(
 
     BOB(
         "Bob",
+        10414,
         Tile(3239, 3486, 0),
         Tile(3242, 3489, 1),
         arrayOf(
@@ -129,6 +140,7 @@ enum class Homes(
 
     JEFF(
         "Jeff",
+        10415,
         Tile(3240, 3451, 0),
         Tile(3239, 3447, 1),
         arrayOf(
@@ -140,6 +152,7 @@ enum class Homes(
 
     SARAH(
         "Sarah",
+        10416,
         Tile(3234, 3384, 0),
         Tile(3235, 3386, 0),
         arrayOf(

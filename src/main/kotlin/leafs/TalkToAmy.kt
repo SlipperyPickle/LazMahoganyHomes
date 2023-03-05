@@ -24,7 +24,7 @@ class TalkToAmy(script: Script) : Leaf<Script>(script, "TalkToAmy") {
                 else -> ""
             }
             Chat.completeChat(text)
-            Condition.wait ({!Chat.chatting()}, 75, 20)
+            Condition.wait ({!Chat.chatting()}, 75, 30)
         } else {
             val amy = Npcs.stream().name("Amy").nearest().first()
             if (!amy.valid()) {

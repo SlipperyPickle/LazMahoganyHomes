@@ -1,7 +1,6 @@
 package leafs
 
 import Constants.AMYS_SAW
-import Constants.CONTRACT_FINISH
 import Constants.SAW
 import Script
 import org.powbot.api.Condition
@@ -25,6 +24,11 @@ class WithdrawSaw(script: Script) : Leaf<Script>(script, "WithdrawSaw") {
             Notifications.showNotification("No saw, stopping")
             script.logger("WithdrawSaw", "Now saw, stopping")
             ScriptManager.stop()
+        }
+        if (script.amysSaw) {
+            if (Inventory.stream().id(AMYS_SAW).first().interact("Wield")) {
+                Condition.wait { Inventory.stream().id(AMYS_SAW).isEmpty() }
+            }
         }
     }
 }

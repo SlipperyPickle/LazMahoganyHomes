@@ -1,6 +1,10 @@
 package leafs
 
+import Constants.MAHOGANY_PLANK
+import Constants.OAK_PLANK
+import Constants.PLANK
 import Constants.PLANK_SACK
+import Constants.TEAK_PLANK
 import Script
 import org.powbot.api.Condition
 import org.powbot.api.Notifications
@@ -34,19 +38,20 @@ class WithdrawPlanks(script: Script) : Leaf<Script>(script, "WithdrawPlanks") {
             }
             val plankSack = Inventory.stream().id(PLANK_SACK).first()
             repeat(2) {
+                if (ScriptManager.isStopping()) {
+                    return
+                }
                 Bank.withdraw(home.getPlank(script.currentTier), Bank.Amount.ALL)
                 Condition.wait { Inventory.isFull() }
-//                Condition.wait { !Bank.opened() }
                 plankSack.interact("Use")
-                Condition.wait { !Inventory.isFull() }
-//                Bank.open()
-//                Condition.wait { Bank.opened() }
+                Condition.wait ({ !Inventory.isFull() }, 100, 10)
             }
         }
         if (!Inventory.isFull()) {
             Bank.withdraw(home.getPlank(script.currentTier), Bank.Amount.ALL)
         }
-
+        script.plankSackNumber = script.plankSackNumber +  +
+        Inventory.stream().id(*intArrayOf(PLANK, OAK_PLANK, TEAK_PLANK, MAHOGANY_PLANK)).count().toInt()
         Bank.close()
     }
 }

@@ -23,25 +23,24 @@ class Fix(script: Script) : Leaf<Script>(script, "Fix") {
 
             val obj = Objects.stream().id(it.id).at(it.tile).action(it.action).nearest().first()
             if (script.currentHome == Homes.NOELLA && obj.distance() > 8) return@forEach
-            script.logger("DUMMY", "tile on ${obj.name} on tile ${obj.tile}")
 
             if (obj.valid() && obj.interact(it.action)) {
                 val wid = Widgets.widget(BUILD_FURNITURE_WIDGET).component(BUILD_FURNITURE_COMPONENT +
                         script.currentTier)
                 if (it.action == "Build") {
-                    script.logger("DUMMY", "Waiting for widget")
-                    Condition.wait ({ wid.refresh().visible() }, 200, 20)
-                } else {
-                    script.logger("DUMMY", "Waiting for object despawn")
-                    Condition.wait ({ !obj.refresh().valid() && Players.local().animation() == -1 }, 200, 20)
+                    Condition.wait ({ wid.refresh().visible() }, 100, 40)
+                }
+                else {
+                    Condition.wait ({ !obj.refresh().valid() && Players.local().animation() == -1 }, 300, 20)
                 }
                 if (wid.refresh().visible()) {
                     if (wid.refresh().interact("Build")) {
-                        Condition.wait ({ !wid.refresh().visible() && Players.local().animation() == -1 }, 200, 20)
+                        Condition.wait ({ !wid.refresh().visible() && Players.local().animation() == -1 },
+                            200, 20)
                     }
                 }
             }
-            if (obj.valid()) {
+            if (obj.refresh().valid()) {
                 return
             }
         }

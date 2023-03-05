@@ -3,11 +3,15 @@ import Constants.MAHOGANY_PLANK
 import Constants.OAK_PLANK
 import Constants.PLANK
 import Constants.TEAK_PLANK
+import Constants.WRONG_CONTRACT
 import branch.HasContract
 import homes.Homes
+import org.powbot.api.Notifications
 import org.powbot.api.event.InventoryChangeEvent
 import org.powbot.api.event.MessageEvent
+import org.powbot.api.event.SkillExpGainedEvent
 import org.powbot.api.rt4.Bank
+import org.powbot.api.rt4.Inventory
 import org.powbot.api.rt4.walking.model.Skill
 import org.powbot.api.script.OptionType
 import org.powbot.api.script.ScriptCategory
@@ -41,11 +45,20 @@ import kotlin.properties.Delegates
             optionType = OptionType.STRING,
             allowedValues = arrayOf("Beginner", "Novice", "Adept", "Expert")
         ),
+
         ScriptConfiguration(
             name = "Use planksack",
             description = "Would you like to use a PlankSack?",
             optionType = OptionType.BOOLEAN
         ),
+
+        ScriptConfiguration(
+            name = "Amys saw",
+            description = "Would you like to use Amys saw?",
+            optionType = OptionType.BOOLEAN,
+            defaultValue = "false"
+        ),
+
         ScriptConfiguration(
             name = "Steel bars",
             description = "Number of steel bars to use.",
@@ -56,18 +69,16 @@ import kotlin.properties.Delegates
 )
 
 class Script : TreeScript() {
-        override val rootComponent: TreeComponent<*> = HasContract(this)
-//    override val rootComponent: TreeComponent<*> = SimpleBranch(this, "Simplebranch", SimpleLeaf(this, "") {}, Dummy(this) ) { false }//ShouldGetContract(this)
-
+    override val rootComponent: TreeComponent<*> = HasContract(this)
 
     var currentHome: Homes? = null
     var firstFloorDone: Boolean = false
     var currentTier by Delegates.notNull<Int>()
+    var currentTierString = ""
     var steelBars = 2
     var plankSackNumber: Int = -1
     var usePlankSack = true
-    val amysSaw = false
-//    val currentFurniture = Ross.AllRoss.toMutableList()
+    var amysSaw = false
 
     override fun onStart() {
         addPaint()
@@ -78,8 +89,10 @@ class Script : TreeScript() {
             "Expert" -> 3
             else -> -1
         }
+        currentTierString = getOption<String>("Tier")
         usePlankSack = getOption<Boolean>("Use planksack")
         steelBars = getOption<Int>("Steel bars")
+        amysSaw = getOption<Boolean>("Amys saw")
         DaxWalker.removeBlacklistTeleports(
             Teleport.POH_OUTSIDE_HOSIDIUS,
             Teleport.POH_OUTSIDE_HOSIDIUS_TAB,
@@ -94,9 +107,10 @@ class Script : TreeScript() {
 
     @com.google.common.eventbus.Subscribe
     fun inventoryChangedEvent(inventoryChangeEvent: InventoryChangeEvent) {
-        if (!usePlankSack) { //|| Bank.opened()
+        if (!usePlankSack || !Bank.opened()) {
             return
         }
+
         if (inventoryChangeEvent.itemId != PLANK &&
             inventoryChangeEvent.itemId != OAK_PLANK &&
             inventoryChangeEvent.itemId != TEAK_PLANK &&
@@ -104,31 +118,65 @@ class Script : TreeScript() {
             return
         }
 
-        val logger: Logger = Logger.getLogger(this.javaClass.simpleName)
-        logger.info("Change of ${inventoryChangeEvent.itemName} number: ${inventoryChangeEvent.quantityChange}")
+        if (inventoryChangeEvent.quantityChange in -28..-1) {
+            logger("inventoryChangeEvent", "Change of ${inventoryChangeEvent.itemName} number: " +
+                    "${inventoryChangeEvent.quantityChange}")
+            plankSackNumber += -inventoryChangeEvent.quantityChange
+        }
+    }
 
-        if (Bank.opened()) {
-            if (inventoryChangeEvent.quantityChange in -28 .. -5) {
-                plankSackNumber += -inventoryChangeEvent.quantityChange
-            }
-        } else {
-            if (inventoryChangeEvent.quantityChange in 5 .. 28) {
-                plankSackNumber += -inventoryChangeEvent.quantityChange
-            }
+    @com.google.common.eventbus.Subscribe
+    fun xpGainedEvent(xp: SkillExpGainedEvent) {
+        if (xp.skill != Skill.Construction) {
+            return
         }
 
-
-//        when (inventoryChangeEvent.quantityChange) {
-//            in -4 .. 4 -> {}
-//            in 5..28 -> plankSackNumber += -inventoryChangeEvent.quantityChange
-//            in -28..-5 -> plankSackNumber += -inventoryChangeEvent.quantityChange
-//
-//        }
+        //All xp with and without carpenter's outfit
+        when (currentTier) {
+            0 -> {
+                plankSackNumber = when (xp.expGained) {
+                    22, 23, 14, 128, 129, 130, 131, 132 -> plankSackNumber - 1
+                    44, 45, 46, 47 -> plankSackNumber - 2
+                    67, 68, 69 -> plankSackNumber - 3
+                    90, 92, 93 -> plankSackNumber - 4
+                    else -> plankSackNumber
+                }
+            }
+            1 -> {
+                plankSackNumber = when (xp.expGained) {
+                    48, 49, 50, 160, 161, 162, 163, 164 -> plankSackNumber - 1
+                    96, 97, 98, 99 -> plankSackNumber - 2
+                    144, 145, 146, 147, 148 -> plankSackNumber - 3
+                    192, 193, 194, 195, 196, 197 -> plankSackNumber - 4
+                    else -> plankSackNumber
+                }
+            }
+            2 -> {
+                plankSackNumber = when (xp.expGained) {
+                    72, 73, 74, 190, 192, 193, 194, 195 -> plankSackNumber -1
+                    144, 145, 146, 147, 148 -> plankSackNumber - 2
+                    216, 217, 218, 219, 220, 221 -> plankSackNumber - 3
+                    288, 289, 290, 291, 292, 293, 294, 295, 296 -> plankSackNumber - 4
+                    360, 361, 362, 363, 364, 365, 366, 367, 368, 369 -> plankSackNumber - 5
+                    else -> plankSackNumber
+                }
+            }
+            3 -> {
+                plankSackNumber = when (xp.expGained) {
+                    112, 113, 114, 115,  240, 241, 242, 243, 244, 245, 246 -> plankSackNumber -1
+                    224, 225, 226, 227, 228, 229, 230 -> plankSackNumber - 2
+                    336, 337, 338, 339, 340, 341, 342, 343, 345, 346 -> plankSackNumber - 3
+                    448, 449, 451, 452, 45, 454, 455, 456, 457, 458, 459 -> plankSackNumber - 4
+                    360 -> plankSackNumber - 5
+                    else -> plankSackNumber
+                }
+            }
+        }
     }
 
     @com.google.common.eventbus.Subscribe
     fun messageReceived(msg: MessageEvent) {
-        val txt = msg.message.sanitizeMultilineText()
+        val txt = msg.message.sanitizeMultilineText().replace(" ", " ")
 
         val matcherStart = Constants.CONTRACT_PATTERN.matcher(txt)
         if (matcherStart.matches()) {
@@ -153,10 +201,16 @@ class Script : TreeScript() {
             firstFloorDone = false
         }
 
-        val matcherPlankSack = Constants.PLANK_SACK_REGEX.matcher(txt)
-
-        if (matcherPlankSack.matches()) {
-            plankSackNumber = matcherPlankSack.group(currentTier + 1).toInt()
+        if (txt.startsWith("Basic")) {
+            val plankArray = txt.replace(" ", "").split(",").map { it.replace("[^\\d.]".toRegex(), "").toInt() }
+            plankSackNumber = plankArray[currentTier] + Inventory.stream().id(*intArrayOf(PLANK, OAK_PLANK, TEAK_PLANK, MAHOGANY_PLANK)).count().toInt()
+            logger("messageReceived", "Plank array = ${txt.replace(" ", "").split(",").map { it.replace("[^\\d.]".toRegex(), "")}}")
+        }
+        val matcherWrongContract = WRONG_CONTRACT.matcher(txt)
+        if (matcherWrongContract.matches()) {
+            logger("messageReceived", "Pow selected the wrong contract, stopping.")
+            Notifications.showNotification("Pow selected the wrong contract, stopping.")
+            ScriptManager.stop()
         }
     }
 
@@ -172,6 +226,8 @@ class Script : TreeScript() {
                 replace("-<br>".toRegex(), "-")
                     .replace("<br>".toRegex(), " ")
                     .replace("[ ]+".toRegex(), " ")
+//                    .replace(" ".toRegex(), " ")
+
             )
         }
     }
@@ -181,10 +237,10 @@ class Script : TreeScript() {
             val p: Paint = PaintBuilder.newBuilder()
                 .trackSkill(Skill.Construction)
                 .addString("Last leaf:") { lastLeaf.name }
-                .addString("Current Home:") { currentHome?.home ?: "Null" }
+                .addString("Current home:") { currentHome?.home ?: "Null" }
+                .addString("Current tier:") { currentTierString }
                 .addString("Furniture left:") { Homes.furnitureLeft().toString() }
-                .addString("Current Tier:") { currentTier.toString() }
-                .addString("PlankSack:") { plankSackNumber.toString() }
+                .addString("Total planks:") { plankSackNumber.toString() }
                 .y(45)
                 .x(40)
                 .build()
@@ -193,9 +249,9 @@ class Script : TreeScript() {
             val p: Paint = PaintBuilder.newBuilder()
                 .trackSkill(Skill.Construction)
                 .addString("Last leaf:") { lastLeaf.name }
-                .addString("Current Home:") { currentHome?.home ?: "Null" }
+                .addString("Current home:") { currentHome?.home ?: "Null" }
+                .addString("Current Tier:") { currentTierString }
                 .addString("Furniture left:") { Homes.furnitureLeft().toString() }
-                .addString("Current Tier:") { currentTier.toString() }
                 .y(45)
                 .x(40)
                 .build()
@@ -205,57 +261,10 @@ class Script : TreeScript() {
 
     fun logger(name: String, message: String) {
         val logger = Logger.getLogger(name)
-        logger.info(message)
+        logger.info("[${name.uppercase()}] $message")
     }
-
-
 }
 
 fun main() {
     Script().startScript()
 }
-
-
-
-
-
-//    @com.google.common.eventbus.Subscribe
-//    fun varpChanged(varpEvent: VarpbitChangedEvent) {
-//
-//        if (varpEvent.index == 2747)
-//            logger.info("varpChanged() \t Index = ${varpEvent.index} \t Old = ${varpEvent.previousValue} \t New = ${varpEvent.newValue}")
-//    }
-//
-//    @com.google.common.eventbus.Subscribe
-//    fun gameAction(gameActionEvent: GameActionEvent) {
-//        if (currentHome != null) {
-//            logger.info(
-//                "gameAction() \n" +
-//                        "Home: \t   ${currentHome?.home} \n" +
-//                        "Name: \t     ${gameActionEvent.name} \n" +
-//                        "ID: \t     ${gameActionEvent.id} \n"
-//            )
-//        }
-//    }
-
-//    @com.google.common.eventbus.Subscribe
-//    fun onRender(r: RenderEvent) {
-//
-//        Rendering.setScale(1.0f);
-//        Rendering.setColor(Color.BLACK)
-//        logger.info(objects!!.toList().toString())
-//        if (objects!!.isNotEmpty()) {
-//            objects!!.first().draw()
-//        }
-//    }
-//
-//    override fun poll() {
-//        val actions = arrayOf("Repair", "Remove", "Build")
-//        val objects = Objects.stream().action(*actions).nearest()
-//        for (obj in objects) {
-//            logger.info("name = ${obj.name} \n" +
-//                    "id = ${obj.id()} \n" +
-//                    "mi = ${obj.mainId()}")
-//        }
-//        super.poll()
-//    }

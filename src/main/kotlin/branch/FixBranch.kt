@@ -28,28 +28,27 @@ class IsHomeDone(script: Script) : Branch<Script>(script, "IsHomeDone") {
     }
 }
 
+//class IsAtStartFloor(script: Script) : Branch<Script>(script, "IsAtStartFloor") {
+//    override val successComponent: TreeComponent<Script> = Fix(script)
+//    override val failedComponent: TreeComponent<Script> = UseStairs(script)
+//
+//    override fun validate(): Boolean {
+//        val floor = when (script.currentHome!!) {
+//            Homes.JESS, Homes.NOELLA, Homes.ROSS, Homes.LARRY, Homes.LEELA, Homes.MARIAH, Homes.BOB, Homes.JEFF -> 1
+//            Homes.NORMAN, Homes.TAU, Homes.BARBARA, Homes.SARAH -> 0
+//        }
+//        return floor == Players.local().floor()
+//    }
+//}
+
 class IsNearHomeOwner(script: Script) : Branch<Script>(script, "IsNearHomeOwner") {
     override val successComponent: TreeComponent<Script> = TalkToHomeOwner(script)
     override val failedComponent: TreeComponent<Script> = WalkTo(script, Destination.HOME_OWNER)
 
     override fun validate(): Boolean {
-        val homeOwner = Npcs.stream().name(script.currentHome!!.name).firstOrNull()
-        return homeOwner != null && homeOwner.inViewport()
+        val homeOwner = Npcs.stream().name(script.currentHome!!.name).nearest().first()
+        return homeOwner.valid() && homeOwner.inViewport()
     }
 }
-//
-//class IsInCorrectRoom(script: Script) : Branch<Script>(script, "IsInCorrectRoom") {
-//    override val successComponent: TreeComponent<Script> = Fix(script)
-//    override val failedComponent: TreeComponent<Script> = if (script.firstFloorDone)
-//                WalkTo(script, Destination.FIRST_ROOM) else
-//                WalkTo(script, Destination.SECOND_ROOM)
-//
-//    override fun validate(): Boolean {
-//        val home = script.currentHome!!.name
-//        return Homes.inCorrectRoom(home, script.firstFloorDone)
-//    }
-//}
-
-
 
 

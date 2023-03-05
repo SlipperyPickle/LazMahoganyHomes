@@ -57,10 +57,10 @@ object Barbara {
 }
 
 object Bob {
-    private val WardrobeRemove = Furniture(39917, "Remove", Tile(x=3242, y=3487, floor=1))
-    private val WardrobeBuild = Furniture(40075, "Build", Tile(x=3242, y=3487, floor=1))
     private val DrawersRemove = Furniture(39923, "Remove", Tile(x=3242, y=3486, floor=1))
     private val DrawersBuild = Furniture(40082, "Build", Tile(x=3242, y=3486, floor=1))
+    private val WardrobeRemove = Furniture(39917, "Remove", Tile(x=3242, y=3487, floor=1))
+    private val WardrobeBuild = Furniture(40075, "Build", Tile(x=3242, y=3487, floor=1))
     private val Staircase = Furniture(11799, "Climb-down", Tile(x=3241, y=3490, floor=1))
     private val BookcaseOneRemove = Furniture(39911, "Remove", Tile(x=3235, y=3489, floor=0))
     private val BookcaseOneBuild = Furniture(40074, "Build", Tile(x=3235, y=3489, floor=0))
@@ -75,7 +75,7 @@ object Bob {
     private val GrandFatherClock = Furniture(39897, "Repair", Tile(x=3235, y=3483, floor=0))
 
     val AllBob = listOf(
-        WardrobeRemove, WardrobeBuild, DrawersRemove, DrawersBuild, Staircase, BookcaseOneRemove, BookcaseOneBuild,
+        DrawersRemove, DrawersBuild, WardrobeRemove, WardrobeBuild, Staircase, BookcaseOneRemove, BookcaseOneBuild,
         CabinetOneRemove, CabinetOneBuild, CabinetTwoRemove, CabinetTwoBuild, TableRemove, TableBuild,
         BookcaseTwoRemove, BookcaseTwoBuild, GrandFatherClock
     )
@@ -155,7 +155,6 @@ object Larry {
 object Leela {
     private val TableOneRemove = Furniture(40017, "Remove", Tile(x=1782, y=3591, floor=1))
     private val TableOneBuild = Furniture(40072, "Build", Tile(x=1782, y=3591, floor=1))
-
     private val BrokenMirror  = Furniture(40179, "Repair", Tile(x=1786, y=3590, floor=1))
     private val CupBoardRemove = Furniture(40115, "Remove", Tile(x=1788, y=3590, floor=1))
     private val CupBoardBuild = Furniture(40078, "Build", Tile(x=1788, y=3590, floor=1))

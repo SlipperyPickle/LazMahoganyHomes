@@ -5,19 +5,20 @@ import Constants.NEW_CONTRACT_TILE
 import Script
 import homes.Homes
 import org.powbot.api.Locatable
+import org.powbot.api.Tile
 import org.powbot.api.rt4.Movement
 import org.powbot.api.script.tree.Leaf
 import org.powbot.dax.api.DaxWalker
 import org.powbot.dax.teleports.Teleport
 
-class WalkTo(script: Script, private val location: Destination) : Leaf<Script>(script,
-    "Walking to ${location.name.lowercase()}") {
+class WalkTo(script: Script, private val location: Destination) : Leaf<Script>(script, "Walking") {
 
     override fun execute() {
         val destination: Locatable = when (location) {
             Destination.AMY -> NEW_CONTRACT_TILE
             Destination.BANK -> BANK_TILE
-            Destination.HOME -> Homes.get(script.currentHome!!.name)!!.startTile
+            Destination.HOME_WEBWALK -> Homes.get(script.currentHome!!.name)!!.startTile
+            Destination.HOME_STEP -> Homes.get(script.currentHome!!.name)!!.startTile
             Destination.HOME_OWNER -> Homes.get(script.currentHome!!.name)!!.npcLocation
         }
 
@@ -31,22 +32,27 @@ class WalkTo(script: Script, private val location: Destination) : Leaf<Script>(s
             Teleport.ARDOUGNE_TELEPORT,
             Teleport.ARDOUGNE_TELEPORT_TAB
         )
-//        if (destination.distance() < 10 && destination.tile().floor == Players.local().floor()) {
-//            return
-//        }
 
         script.logger("WalkTo $location", "Walking to ${destination.tile()}")
 
-        Movement.builder(destination)
-            .setAutoRun(true)
-            .move()
+        if (location == Destination.HOME_WEBWALK && script.currentHome!! == Homes.BOB) {
+            Movement.moveTo(Tile(3242, 3489, 0))
+        }
 
+        if (location == Destination.HOME_STEP) {
+            Movement.step(destination)
+        } else {
+            Movement.builder(destination)
+                .setAutoRun(true)
+                .move()
+        }
     }
 }
 
 enum class Destination {
     AMY,
     BANK,
-    HOME,
+    HOME_WEBWALK,
+    HOME_STEP,
     HOME_OWNER
 }

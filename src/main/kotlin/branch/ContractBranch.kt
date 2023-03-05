@@ -2,9 +2,12 @@ package branch
 
 import Constants.NEW_CONTRACT_TILE
 import Constants.PLANK_SACK
-import Constants.STEEL_BAR
 import Script
-import leafs.*
+import leafs.CheckPlankSack
+import leafs.Destination
+import leafs.TalkToAmy
+import leafs.WalkTo
+import org.powbot.api.rt4.Bank
 import org.powbot.api.rt4.Inventory
 import org.powbot.api.script.tree.Branch
 import org.powbot.api.script.tree.TreeComponent
@@ -20,19 +23,11 @@ class ShouldWalkToAmy(script: Script) : Branch<Script>(script, "ShouldWalkToAmy"
 
 class ShouldCheckPlankSack(script: Script) : Branch<Script>(script, "ShouldCheckPlankSack") {
     override val successComponent: TreeComponent<Script> = CheckPlankSack(script)
-    override val failedComponent: TreeComponent<Script> = ShouldEmptyPlankSack(script)
-
-    override fun validate(): Boolean {
-        return script.plankSackNumber == -1 && Inventory.stream().id(PLANK_SACK).isNotEmpty()
-    }
-}
-
-class ShouldEmptyPlankSack(script: Script) : Branch<Script>(script, "ShouldEmptyPlankSack") {
-    override val successComponent: TreeComponent<Script> = EmptyPlankSack(script)
     override val failedComponent: TreeComponent<Script> = TalkToAmy(script)
 
     override fun validate(): Boolean {
-        return script.usePlankSack && script.plankSackNumber > 4 && !Inventory.isFull() && Inventory.stream().id(
-            STEEL_BAR).count() > 2
+        return script.usePlankSack && script.plankSackNumber < 0 &&
+                Inventory.stream().id(PLANK_SACK).isNotEmpty() && !Bank.opened()
     }
 }
+
