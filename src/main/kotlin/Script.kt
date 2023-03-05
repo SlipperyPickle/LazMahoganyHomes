@@ -1,4 +1,3 @@
-//import leafs.Dummy
 import Constants.MAHOGANY_PLANK
 import Constants.OAK_PLANK
 import Constants.PLANK

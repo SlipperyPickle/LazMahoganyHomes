@@ -6,8 +6,10 @@ import leafs.Destination
 import leafs.Fix
 import leafs.TalkToHomeOwner
 import leafs.WalkTo
+import org.powbot.api.rt4.Camera
 import org.powbot.api.rt4.Npcs
 import org.powbot.api.script.tree.Branch
+import org.powbot.api.script.tree.SimpleLeaf
 import org.powbot.api.script.tree.TreeComponent
 
 class IsInHome(script: Script) : Branch<Script>(script, "IsInHome") {
@@ -21,25 +23,23 @@ class IsInHome(script: Script) : Branch<Script>(script, "IsInHome") {
 
 class IsHomeDone(script: Script) : Branch<Script>(script, "IsHomeDone") {
     override val successComponent: TreeComponent<Script> = IsNearHomeOwner(script)
-    override val failedComponent: TreeComponent<Script> = Fix(script)
+    override val failedComponent: TreeComponent<Script> = ShouldChangeCamera(script)
 
     override fun validate(): Boolean {
         return Homes.furnitureLeft() == 0
     }
 }
 
-//class IsAtStartFloor(script: Script) : Branch<Script>(script, "IsAtStartFloor") {
-//    override val successComponent: TreeComponent<Script> = Fix(script)
-//    override val failedComponent: TreeComponent<Script> = UseStairs(script)
-//
-//    override fun validate(): Boolean {
-//        val floor = when (script.currentHome!!) {
-//            Homes.JESS, Homes.NOELLA, Homes.ROSS, Homes.LARRY, Homes.LEELA, Homes.MARIAH, Homes.BOB, Homes.JEFF -> 1
-//            Homes.NORMAN, Homes.TAU, Homes.BARBARA, Homes.SARAH -> 0
-//        }
-//        return floor == Players.local().floor()
-//    }
-//}
+class ShouldChangeCamera(script: Script) : Branch<Script>(script, "ShouldChangeCamera") {
+    override val successComponent: TreeComponent<Script> = SimpleLeaf(script, "ChangeCamera") {
+        Camera.moveZoomSlider(25.0)
+    }
+    override val failedComponent: TreeComponent<Script> = Fix(script)
+
+    override fun validate(): Boolean {
+        return Camera.zoom > 35
+    }
+}
 
 class IsNearHomeOwner(script: Script) : Branch<Script>(script, "IsNearHomeOwner") {
     override val successComponent: TreeComponent<Script> = TalkToHomeOwner(script)

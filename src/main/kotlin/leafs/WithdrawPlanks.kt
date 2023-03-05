@@ -28,9 +28,7 @@ class WithdrawPlanks(script: Script) : Leaf<Script>(script, "WithdrawPlanks") {
             if (Inventory.stream().id(PLANK_SACK).isEmpty()) {
                 val plankSack = Bank.stream().id(PLANK_SACK)
                 if (plankSack.isEmpty()) {
-                    Notifications.showNotification("No planksack detected, stopping")
-                    script.logger("WithdrawPlanks", "No planksack detected, stopping")
-                    ScriptManager.stop()
+                    script.usePlankSack = false
                 } else {
                     Bank.withdraw(PLANK_SACK, 1)
                     Condition.wait{ Inventory.stream().id(PLANK_SACK).isNotEmpty() }
