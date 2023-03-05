@@ -130,44 +130,44 @@ class Script : TreeScript() {
         if (xp.skill != Skill.Construction) {
             return
         }
-
-        //All xp with and without carpenter's outfit
         when (currentTier) {
             0 -> {
                 plankSackNumber = when (xp.expGained) {
-                    22, 23, 14, 128, 129, 130, 131, 132 -> plankSackNumber - 1
-                    44, 45, 46, 47 -> plankSackNumber - 2
-                    67, 68, 69 -> plankSackNumber - 3
-                    90, 92, 93 -> plankSackNumber - 4
+                    in 22..24, in 128..132 -> plankSackNumber - 1
+                    in 44..47 -> plankSackNumber - 2
+                    in 67..69 -> plankSackNumber - 3
+                    in 90..93 -> plankSackNumber - 4
                     else -> plankSackNumber
                 }
             }
+
             1 -> {
                 plankSackNumber = when (xp.expGained) {
-                    48, 49, 50, 160, 161, 162, 163, 164 -> plankSackNumber - 1
-                    96, 97, 98, 99 -> plankSackNumber - 2
-                    144, 145, 146, 147, 148 -> plankSackNumber - 3
-                    192, 193, 194, 195, 196, 197 -> plankSackNumber - 4
+                    in 48..50, in 160..164 -> plankSackNumber - 1
+                    in 96..99 -> plankSackNumber - 2
+                    in 144..148 -> plankSackNumber - 3
+                    in 192..197 -> plankSackNumber - 4
                     else -> plankSackNumber
                 }
             }
+
             2 -> {
                 plankSackNumber = when (xp.expGained) {
-                    72, 73, 74, 190, 192, 193, 194, 195 -> plankSackNumber -1
-                    144, 145, 146, 147, 148 -> plankSackNumber - 2
-                    216, 217, 218, 219, 220, 221 -> plankSackNumber - 3
-                    288, 289, 290, 291, 292, 293, 294, 295, 296 -> plankSackNumber - 4
-                    360, 361, 362, 363, 364, 365, 366, 367, 368, 369 -> plankSackNumber - 5
+                    in 72..74, in 190..195 -> plankSackNumber - 1
+                    in 144..148 -> plankSackNumber - 2
+                    in 216..221 -> plankSackNumber - 3
+                    in 288..296 -> plankSackNumber - 4
+                    in 360..369 -> plankSackNumber - 5
                     else -> plankSackNumber
                 }
             }
+
             3 -> {
                 plankSackNumber = when (xp.expGained) {
-                    112, 113, 114, 115,  240, 241, 242, 243, 244, 245, 246 -> plankSackNumber -1
-                    224, 225, 226, 227, 228, 229, 230 -> plankSackNumber - 2
-                    336, 337, 338, 339, 340, 341, 342, 343, 345, 346 -> plankSackNumber - 3
-                    448, 449, 451, 452, 45, 454, 455, 456, 457, 458, 459 -> plankSackNumber - 4
-                    360 -> plankSackNumber - 5
+                    in 112..115, in 240..246 -> plankSackNumber - 1
+                    in 224..230 -> plankSackNumber - 2
+                    in 336..346 -> plankSackNumber - 3
+                    in 448..459 -> plankSackNumber - 4
                     else -> plankSackNumber
                 }
             }
