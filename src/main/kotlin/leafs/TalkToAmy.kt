@@ -29,7 +29,7 @@ class TalkToAmy(script: Script) : Leaf<Script>(script, "TalkToAmy") {
             val amy = Npcs.stream().name("Amy").nearest().first()
             if (!amy.valid()) {
                 Notifications.showNotification("Couldn't find Amy, stopping")
-                script.logger("WithdrawSaw", "Couldn't find Amy, stopping")
+                script.logger("TalkToAmy", "Couldn't find Amy, stopping")
                 ScriptManager.stop()
             }
             if (!amy.inViewport()) {

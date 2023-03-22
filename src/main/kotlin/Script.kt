@@ -30,7 +30,7 @@ import kotlin.properties.Delegates
 @ScriptManifest(
     name = "LazMahoganyHomes",
     description = "Mahogany Homes",
-    version = "1.0.0",
+    version = "1.0.1",
     category = ScriptCategory.Construction,
     author = "Lazarus",
     markdownFileName = "MahoganyHomes.md"
@@ -71,9 +71,8 @@ class Script : TreeScript() {
     override val rootComponent: TreeComponent<*> = HasContract(this)
 
     var currentHome: Homes? = null
-    var firstFloorDone: Boolean = false
     var currentTier by Delegates.notNull<Int>()
-    var currentTierString = ""
+    private var currentTierString = ""
     var steelBars = 2
     var plankSackNumber: Int = -1
     var usePlankSack = true
@@ -132,41 +131,40 @@ class Script : TreeScript() {
         when (currentTier) {
             0 -> {
                 plankSackNumber = when (xp.expGained) {
-                    in 22..24, in 128..132 -> plankSackNumber - 1
-                    in 44..47 -> plankSackNumber - 2
-                    in 67..69 -> plankSackNumber - 3
-                    in 90..93 -> plankSackNumber - 4
+                    in 21..25, in 127..134 -> plankSackNumber - 1
+                    in 42..49 -> plankSackNumber - 2
+                    in 65..71 -> plankSackNumber - 3
+                    in 88..91 -> plankSackNumber - 4
                     else -> plankSackNumber
                 }
             }
 
             1 -> {
                 plankSackNumber = when (xp.expGained) {
-                    in 48..50, in 160..164 -> plankSackNumber - 1
-                    in 96..99 -> plankSackNumber - 2
-                    in 144..148 -> plankSackNumber - 3
-                    in 192..197 -> plankSackNumber - 4
+                    in 47..51, in 159..166 -> plankSackNumber - 1
+                    in 94..101 -> plankSackNumber - 2
+                    in 142..150 -> plankSackNumber - 3
+                    in 190..199 -> plankSackNumber - 4
                     else -> plankSackNumber
                 }
             }
 
             2 -> {
                 plankSackNumber = when (xp.expGained) {
-                    in 72..74, in 190..195 -> plankSackNumber - 1
-                    in 144..148 -> plankSackNumber - 2
-                    in 216..221 -> plankSackNumber - 3
-                    in 288..296 -> plankSackNumber - 4
-                    in 360..369 -> plankSackNumber - 5
+                    in 71..75, in 189..196 -> plankSackNumber - 1
+                    in 142..150 -> plankSackNumber - 2
+                    in 214..224 -> plankSackNumber - 3
+                    in 290..298 -> plankSackNumber - 4
                     else -> plankSackNumber
                 }
             }
 
             3 -> {
                 plankSackNumber = when (xp.expGained) {
-                    in 112..115, in 240..246 -> plankSackNumber - 1
-                    in 224..230 -> plankSackNumber - 2
-                    in 336..346 -> plankSackNumber - 3
-                    in 448..459 -> plankSackNumber - 4
+                    in 110..117, in 238..248 -> plankSackNumber - 1
+                    in 222..232 -> plankSackNumber - 2
+                    in 334..348 -> plankSackNumber - 3
+                    in 446..461 -> plankSackNumber - 4
                     else -> plankSackNumber
                 }
             }
@@ -197,7 +195,6 @@ class Script : TreeScript() {
         if (matcherFinished.matches()) {
             logger("messageReceived", "Task finished")
             currentHome = null
-            firstFloorDone = false
         }
 
         if (txt.startsWith("Basic")) {
@@ -266,4 +263,6 @@ class Script : TreeScript() {
 
 fun main() {
     Script().startScript()
+
+
 }

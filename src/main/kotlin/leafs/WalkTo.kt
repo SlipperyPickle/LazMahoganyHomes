@@ -5,7 +5,6 @@ import Constants.NEW_CONTRACT_TILE
 import Script
 import homes.Homes
 import org.powbot.api.Locatable
-import org.powbot.api.Tile
 import org.powbot.api.rt4.Movement
 import org.powbot.api.script.tree.Leaf
 import org.powbot.dax.api.DaxWalker
@@ -35,9 +34,10 @@ class WalkTo(script: Script, private val location: Destination) : Leaf<Script>(s
 
         script.logger("WalkTo $location", "Walking to ${destination.tile()}")
 
-        if (location == Destination.HOME_WEBWALK && script.currentHome!! == Homes.BOB) {
-            Movement.moveTo(Tile(3242, 3489, 0))
-        }
+//        Should be fixed in walker
+//        if (location == Destination.HOME_WEBWALK && script.currentHome!! == Homes.BOB) {
+//            Movement.moveTo(Tile(3242, 3489, 0))
+//        }
 
         if (location == Destination.HOME_STEP) {
             Movement.step(destination)

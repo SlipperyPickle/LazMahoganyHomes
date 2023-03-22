@@ -48,8 +48,9 @@ class WithdrawPlanks(script: Script) : Leaf<Script>(script, "WithdrawPlanks") {
         if (!Inventory.isFull()) {
             Bank.withdraw(home.getPlank(script.currentTier), Bank.Amount.ALL)
         }
-        script.plankSackNumber = script.plankSackNumber +  +
-        Inventory.stream().id(*intArrayOf(PLANK, OAK_PLANK, TEAK_PLANK, MAHOGANY_PLANK)).count().toInt()
+
+        val invCount = Inventory.stream().id(PLANK, OAK_PLANK, TEAK_PLANK, MAHOGANY_PLANK).count().toInt()
+        script.plankSackNumber = if (script.usePlankSack) 28 + invCount else invCount
         Bank.close()
     }
 }

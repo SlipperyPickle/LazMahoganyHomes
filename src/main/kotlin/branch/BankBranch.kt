@@ -72,7 +72,7 @@ class ShouldWithdrawSaw(script: Script) : Branch<Script>(script, "ShouldWithdraw
     override val failedComponent: TreeComponent<Script> = ShouldWithdrawHammer(script)
 
     override fun validate(): Boolean {
-        return Inventory.stream().id(*intArrayOf(SAW, AMYS_SAW)).isEmpty() &&
+        return Inventory.stream().id(SAW, AMYS_SAW).isEmpty() &&
                 Equipment.stream().id(AMYS_SAW).isEmpty()
     }
 }
